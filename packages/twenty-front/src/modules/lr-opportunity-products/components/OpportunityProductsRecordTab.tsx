@@ -3,6 +3,7 @@ import { OpportunityProductLineRow } from '@/lr-opportunity-products/components/
 import {
   OPPORTUNITY_PRODUCTS_TABLE_GRID_AUTO_COLUMNS,
   OPPORTUNITY_PRODUCTS_TABLE_GRID_AUTO_COLUMNS_MOBILE,
+  OPPORTUNITY_PRODUCTS_TABLE_MIN_WIDTH_PX,
 } from '@/lr-opportunity-products/constants/opportunity-products-table-grid.constant';
 import { type OpportunityProductLineRecord } from '@/lr-opportunity-products/types/opportunity-product-line-record.type';
 import { useObjectMetadataItems } from '@/object-metadata/hooks/useObjectMetadataItems';
@@ -40,7 +41,11 @@ const StyledRoot = styled.div`
   flex-direction: column;
   gap: ${themeCssVariables.spacing[4]};
   padding: ${themeCssVariables.spacing[4]};
+  overflow-x: auto;
+  min-width: 0;
 `;
+
+const StyledTableMinWidth = styled.div``;
 
 const StyledTotalLabel = styled.span`
   color: ${themeCssVariables.font.color.secondary};
@@ -153,68 +158,72 @@ const OpportunityProductsRecordTabBody = () => {
 
   return (
     <StyledRoot>
-      <Table>
-        <TableRow
-          gridAutoColumns={OPPORTUNITY_PRODUCTS_TABLE_GRID_AUTO_COLUMNS}
-          mobileGridAutoColumns={
-            OPPORTUNITY_PRODUCTS_TABLE_GRID_AUTO_COLUMNS_MOBILE
-          }
-        >
-          <TableHeader>{t`Товар`}</TableHeader>
-          <TableHeader
-            padding={`0 ${themeCssVariables.spacing[1]} 0 ${themeCssVariables.spacing[2]}`}
+      <StyledTableMinWidth
+        style={{ minWidth: `${OPPORTUNITY_PRODUCTS_TABLE_MIN_WIDTH_PX}px` }}
+      >
+        <Table>
+          <TableRow
+            gridAutoColumns={OPPORTUNITY_PRODUCTS_TABLE_GRID_AUTO_COLUMNS}
+            mobileGridAutoColumns={
+              OPPORTUNITY_PRODUCTS_TABLE_GRID_AUTO_COLUMNS_MOBILE
+            }
           >
-            {t`Шт.`}
-          </TableHeader>
-          <TableHeader padding={`0 ${themeCssVariables.spacing[2]}`}>
-            {t`Цена`}
-          </TableHeader>
-          <TableHeader>{t`Сумма`}</TableHeader>
-          <TableHeader />
-        </TableRow>
-        <TableBody>
-          {loading
-            ? null
-            : lines.map((line) => (
-                <OpportunityProductLineRow
-                  key={line.id}
-                  line={line}
-                  defaultCurrencyCode={defaultCurrencyCode}
-                  onDelete={handleDeleteLine}
-                />
-              ))}
-          <OpportunityProductSearchAddRow
-            onProductSelected={handleAddProductFromSearch}
-          />
-          {!loading ? (
-            <TableRow
-              gridAutoColumns={OPPORTUNITY_PRODUCTS_TABLE_GRID_AUTO_COLUMNS}
-              mobileGridAutoColumns={
-                OPPORTUNITY_PRODUCTS_TABLE_GRID_AUTO_COLUMNS_MOBILE
-              }
-              style={{
-                borderTop: `1px solid ${themeCssVariables.border.color.light}`,
-                marginTop: themeCssVariables.spacing[2],
-              }}
+            <TableHeader>{t`Товар`}</TableHeader>
+            <TableHeader
+              padding={`0 ${themeCssVariables.spacing[1]} 0 ${themeCssVariables.spacing[2]}`}
             >
-              <TableCell minWidth="0" overflow="hidden">
-                <StyledTotalLabel>{t`Итого`}</StyledTotalLabel>
-              </TableCell>
-              <TableCell />
-              <TableCell />
-              <TableCell minWidth="0" overflow="hidden">
-                <StyledTotalAmount>
-                  {convertCurrencyMicrosToCurrencyAmount(
-                    linesTotalMicros,
-                  ).toFixed(2)}{' '}
-                  {defaultCurrencyCode}
-                </StyledTotalAmount>
-              </TableCell>
-              <TableCell />
-            </TableRow>
-          ) : null}
-        </TableBody>
-      </Table>
+              {t`Шт.`}
+            </TableHeader>
+            <TableHeader padding={`0 ${themeCssVariables.spacing[2]}`}>
+              {t`Цена`}
+            </TableHeader>
+            <TableHeader>{t`Сумма`}</TableHeader>
+            <TableHeader />
+          </TableRow>
+          <TableBody>
+            {loading
+              ? null
+              : lines.map((line) => (
+                  <OpportunityProductLineRow
+                    key={line.id}
+                    line={line}
+                    defaultCurrencyCode={defaultCurrencyCode}
+                    onDelete={handleDeleteLine}
+                  />
+                ))}
+            <OpportunityProductSearchAddRow
+              onProductSelected={handleAddProductFromSearch}
+            />
+            {!loading ? (
+              <TableRow
+                gridAutoColumns={OPPORTUNITY_PRODUCTS_TABLE_GRID_AUTO_COLUMNS}
+                mobileGridAutoColumns={
+                  OPPORTUNITY_PRODUCTS_TABLE_GRID_AUTO_COLUMNS_MOBILE
+                }
+                style={{
+                  borderTop: `1px solid ${themeCssVariables.border.color.light}`,
+                  marginTop: themeCssVariables.spacing[2],
+                }}
+              >
+                <TableCell minWidth="0" overflow="hidden">
+                  <StyledTotalLabel>{t`Итого`}</StyledTotalLabel>
+                </TableCell>
+                <TableCell />
+                <TableCell />
+                <TableCell minWidth="0" overflow="hidden">
+                  <StyledTotalAmount>
+                    {convertCurrencyMicrosToCurrencyAmount(
+                      linesTotalMicros,
+                    ).toFixed(2)}{' '}
+                    {defaultCurrencyCode}
+                  </StyledTotalAmount>
+                </TableCell>
+                <TableCell />
+              </TableRow>
+            ) : null}
+          </TableBody>
+        </Table>
+      </StyledTableMinWidth>
     </StyledRoot>
   );
 };

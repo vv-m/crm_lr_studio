@@ -22,7 +22,7 @@ describe('getTimelineActivityAuthorFullName', () => {
       currentWorkspaceMember as CurrentWorkspaceMember,
     );
 
-    expect(result).toBe('You');
+    expect(result).toBe('Ты');
   });
 
   it('should return the full name of the workspace member if they are not the current workspace member', () => {

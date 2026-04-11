@@ -9,8 +9,6 @@ import { LayoutCustomizationBar } from '@/layout-customization/components/Layout
 import { AppNavigationDrawer } from '@/navigation/components/AppNavigationDrawer';
 import { MobileNavigationBar } from '@/navigation/components/MobileNavigationBar';
 import { PageDragDropProvider } from '@/navigation-menu-item/display/dnd/providers/PageDragDropProvider';
-import { useIsSettingsPage } from '@/navigation/hooks/useIsSettingsPage';
-import { OBJECT_SETTINGS_WIDTH } from '@/settings/data-model/constants/ObjectSettings';
 import { SignInAppNavigationDrawerMock } from '@/sign-in-background-mock/components/SignInAppNavigationDrawerMock';
 import { Suspense, lazy, useContext } from 'react';
 
@@ -21,12 +19,10 @@ const SignInBackgroundMockPage = lazy(() =>
 );
 import { useShowFullscreen } from '@/ui/layout/fullscreen/hooks/useShowFullscreen';
 import { useShowAuthModal } from '@/ui/layout/hooks/useShowAuthModal';
-import { NAVIGATION_DRAWER_CONSTRAINTS } from '@/ui/layout/resizable-panel/constants/NavigationDrawerConstraints';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import { styled } from '@linaria/react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { Outlet } from 'react-router-dom';
-import { useScreenSize } from 'twenty-ui/utilities';
 import { ThemeContext, themeCssVariables } from 'twenty-ui/theme-constants';
 const StyledLayout = styled.div`
   background: ${themeCssVariables.background.noisy};
@@ -63,8 +59,6 @@ const StyledMainContainer = styled.div`
 
 export const DefaultLayout = () => {
   const isMobile = useIsMobile();
-  const isSettingsPage = useIsSettingsPage();
-  const windowsWidth = useScreenSize().width;
   const showAuthModal = useShowAuthModal();
   const useShowFullScreen = useShowFullscreen();
   const { theme } = useContext(ThemeContext);
@@ -78,14 +72,7 @@ export const DefaultLayout = () => {
             <LayoutCustomizationBar />
             <StyledPageContainer
               animate={{
-                marginLeft:
-                  isSettingsPage && !isMobile && !useShowFullScreen
-                    ? (windowsWidth -
-                        (OBJECT_SETTINGS_WIDTH +
-                          NAVIGATION_DRAWER_CONSTRAINTS.default +
-                          76)) /
-                      2
-                    : 0,
+                marginLeft: 0,
               }}
               transition={{
                 duration: theme.animation.duration.normal,

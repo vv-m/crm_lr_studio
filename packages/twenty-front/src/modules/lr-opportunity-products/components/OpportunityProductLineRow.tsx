@@ -179,7 +179,7 @@ export const OpportunityProductLineRow = ({
           onBlur={() => {
             void handleUnitPriceBlur();
           }}
-          placeholder={t`Amount`}
+          placeholder={t`Сумма`}
           fullWidth
         />
       </TableCell>

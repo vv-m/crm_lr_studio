@@ -510,10 +510,36 @@ export class SearchService {
     return labelIdentifierFields.map((field) => record[field]).join(' ');
   }
 
+  getImageIdentifierFieldMetadata(
+    flatObjectMetadata: FlatObjectMetadata,
+    flatFieldMetadataMaps: FlatEntityMaps<FlatFieldMetadata>,
+  ): FlatFieldMetadata | null {
+    if (!isDefined(flatObjectMetadata.imageIdentifierFieldMetadataId)) {
+      return null;
+    }
+
+    const imageIdentifierField = findFlatEntityByIdInFlatEntityMaps({
+      flatEntityId: flatObjectMetadata.imageIdentifierFieldMetadataId,
+      flatEntityMaps: flatFieldMetadataMaps,
+    });
+
+    return imageIdentifierField ?? null;
+  }
+
   getImageIdentifierColumn(
     flatObjectMetadata: FlatObjectMetadata,
     flatFieldMetadataMaps: FlatEntityMaps<FlatFieldMetadata>,
   ) {
+    // Explicit per-object image identifier has priority over built-in fallbacks.
+    const explicitImageIdentifierField = this.getImageIdentifierFieldMetadata(
+      flatObjectMetadata,
+      flatFieldMetadataMaps,
+    );
+
+    if (isDefined(explicitImageIdentifierField)) {
+      return explicitImageIdentifierField.name;
+    }
+
     if (flatObjectMetadata.nameSingular === 'company') {
       return 'domainNamePrimaryLinkUrl';
     }
@@ -527,20 +553,7 @@ export class SearchService {
       return 'avatarUrl';
     }
 
-    if (!flatObjectMetadata.imageIdentifierFieldMetadataId) {
-      return null;
-    }
-
-    const imageIdentifierField = findFlatEntityByIdInFlatEntityMaps({
-      flatEntityId: flatObjectMetadata.imageIdentifierFieldMetadataId,
-      flatEntityMaps: flatFieldMetadataMaps,
-    });
-
-    if (!isDefined(imageIdentifierField)) {
-      return null;
-    }
-
-    return imageIdentifierField.name;
+    return null;
   }
 
   private getImageUrlWithToken(
@@ -561,6 +574,36 @@ export class SearchService {
     flatFieldMetadataMaps: FlatEntityMaps<FlatFieldMetadata>,
     workspaceId: string,
   ): string {
+    // Explicit per-object image identifier takes priority over built-in fallbacks.
+    const explicitImageIdentifierField = this.getImageIdentifierFieldMetadata(
+      flatObjectMetadata,
+      flatFieldMetadataMaps,
+    );
+
+    if (isDefined(explicitImageIdentifierField)) {
+      const rawValue = record[explicitImageIdentifierField.name];
+
+      if (explicitImageIdentifierField.type === FieldMetadataType.FILES) {
+        const fileId = (rawValue as FileOutput[] | undefined)?.[0]?.fileId;
+
+        if (!isDefined(fileId)) {
+          return '';
+        }
+
+        return this.getImageUrlWithToken(
+          fileId,
+          FileFolder.FilesField,
+          workspaceId,
+        );
+      }
+
+      if (isNonEmptyString(rawValue)) {
+        return rawValue;
+      }
+
+      return '';
+    }
+
     const imageIdentifierField = this.getImageIdentifierColumn(
       flatObjectMetadata,
       flatFieldMetadataMaps,

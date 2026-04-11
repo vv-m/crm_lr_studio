@@ -1,6 +1,6 @@
 import { ContextStoreViewType } from '@/context-store/types/ContextStoreViewType';
+import { resolveRecordIndexContextStoreViewType } from '@/lr-record-index-view/utils/resolve-record-index-context-store-view-type.util';
 import { type View } from '@/views/types/View';
-import { ViewType } from '@/views/types/ViewType';
 
 export const getViewType = ({
   isSettingsPage,
@@ -18,9 +18,7 @@ export const getViewType = ({
   }
 
   if (isRecordIndexPage) {
-    return view?.type === ViewType.KANBAN
-      ? ContextStoreViewType.Kanban
-      : ContextStoreViewType.Table;
+    return resolveRecordIndexContextStoreViewType({ view });
   }
 
   if (isRecordShowPage) {

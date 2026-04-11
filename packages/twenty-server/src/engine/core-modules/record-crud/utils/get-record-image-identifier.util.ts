@@ -22,6 +22,41 @@ export const getRecordImageIdentifier = ({
   flatFieldMetadataMaps,
   signUrl,
 }: GetRecordImageIdentifierOptions): string | null => {
+  // Explicit per-object image identifier wins over built-in fallbacks.
+  if (isDefined(flatObjectMetadata.imageIdentifierFieldMetadataId)) {
+    const imageIdentifierField = findFlatEntityByIdInFlatEntityMaps({
+      flatEntityMaps: flatFieldMetadataMaps,
+      flatEntityId: flatObjectMetadata.imageIdentifierFieldMetadataId,
+    });
+
+    if (isDefined(imageIdentifierField)) {
+      const imageValue = record[imageIdentifierField.name];
+
+      // FILES field: resolve the first uploaded file via signUrl.
+      if (Array.isArray(imageValue)) {
+        const firstFile = imageValue[0] as FileOutput | undefined;
+        const fileId = firstFile?.fileId;
+
+        if (signUrl && isDefined(fileId)) {
+          return signUrl(fileId, FileFolder.FilesField);
+        }
+      } else if (isDefined(imageValue)) {
+        const rawImageValue = String(imageValue);
+
+        if (isNonEmptyString(rawImageValue)) {
+          if (
+            signUrl &&
+            flatObjectMetadata.nameSingular === 'workspaceMember'
+          ) {
+            return signUrl(rawImageValue, FileFolder.FilesField);
+          }
+
+          return rawImageValue;
+        }
+      }
+    }
+  }
+
   if (flatObjectMetadata.nameSingular === 'company') {
     const domainNameObj = record.domainName as
       | { primaryLinkUrl?: string }
@@ -57,34 +92,5 @@ export const getRecordImageIdentifier = ({
     return signUrl(avatarFileId, FileFolder.CorePicture);
   }
 
-  if (!isDefined(flatObjectMetadata.imageIdentifierFieldMetadataId)) {
-    return null;
-  }
-
-  const imageIdentifierField = findFlatEntityByIdInFlatEntityMaps({
-    flatEntityMaps: flatFieldMetadataMaps,
-    flatEntityId: flatObjectMetadata.imageIdentifierFieldMetadataId,
-  });
-
-  if (!isDefined(imageIdentifierField)) {
-    return null;
-  }
-
-  const imageValue = record[imageIdentifierField.name];
-
-  if (!isDefined(imageValue)) {
-    return null;
-  }
-
-  const rawImageValue = String(imageValue);
-
-  if (!isNonEmptyString(rawImageValue)) {
-    return null;
-  }
-
-  if (signUrl && flatObjectMetadata.nameSingular === 'workspaceMember') {
-    return signUrl(rawImageValue, FileFolder.FilesField);
-  }
-
-  return rawImageValue;
+  return null;
 };

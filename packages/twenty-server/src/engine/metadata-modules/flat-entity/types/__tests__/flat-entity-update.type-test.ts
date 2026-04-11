@@ -49,6 +49,8 @@ type Assertions = [
       | 'labelPlural'
       | 'labelIdentifierFieldMetadataId'
       | 'labelIdentifierFieldMetadataUniversalIdentifier'
+      | 'imageIdentifierFieldMetadataId'
+      | 'imageIdentifierFieldMetadataUniversalIdentifier'
       | 'isSearchable'
     >
   >,

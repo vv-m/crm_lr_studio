@@ -12,6 +12,19 @@ export const getAvatarUrl = (
   imageIdentifierFieldMetadataItem: FieldMetadataItem | undefined,
   allowRequestsToTwentyIcons?: boolean | undefined,
 ) => {
+  // Explicit per-record image identifier wins for every object type.
+  const imageIdentifierFieldValue = getImageIdentifierFieldValue(
+    record,
+    imageIdentifierFieldMetadataItem,
+  );
+
+  if (
+    isDefined(imageIdentifierFieldValue) &&
+    imageIdentifierFieldValue !== ''
+  ) {
+    return imageIdentifierFieldValue;
+  }
+
   if (objectNameSingular === CoreObjectNameSingular.WorkspaceMember) {
     return record.avatarUrl ?? undefined;
   }
@@ -27,15 +40,6 @@ export const getAvatarUrl = (
 
   if (objectNameSingular === CoreObjectNameSingular.Person) {
     return record.avatarFile?.[0]?.url ?? '';
-  }
-
-  const imageIdentifierFieldValue = getImageIdentifierFieldValue(
-    record,
-    imageIdentifierFieldMetadataItem,
-  );
-
-  if (isDefined(imageIdentifierFieldValue)) {
-    return imageIdentifierFieldValue;
   }
 
   return '';

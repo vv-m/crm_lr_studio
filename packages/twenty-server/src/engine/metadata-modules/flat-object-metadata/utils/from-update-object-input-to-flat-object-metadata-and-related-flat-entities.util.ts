@@ -95,6 +95,27 @@ export const fromUpdateObjectInputToFlatObjectMetadataAndRelatedFlatEntities =
         flatFieldMetadata?.universalIdentifier;
     }
 
+    if (
+      updatedEditableObjectProperties.imageIdentifierFieldMetadataId !==
+      undefined
+    ) {
+      const imageIdentifierFieldMetadataId =
+        updatedEditableObjectProperties.imageIdentifierFieldMetadataId;
+
+      if (imageIdentifierFieldMetadataId === null) {
+        toFlatObjectMetadata.imageIdentifierFieldMetadataUniversalIdentifier =
+          null;
+      } else {
+        const flatFieldMetadata = findFlatEntityByIdInFlatEntityMapsOrThrow({
+          flatEntityMaps: flatFieldMetadataMaps,
+          flatEntityId: imageIdentifierFieldMetadataId,
+        });
+
+        toFlatObjectMetadata.imageIdentifierFieldMetadataUniversalIdentifier =
+          flatFieldMetadata.universalIdentifier;
+      }
+    }
+
     const {
       flatIndexMetadatasToUpdate,
       flatViewFieldsToCreate,

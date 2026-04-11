@@ -10,6 +10,17 @@ export const checkIfFieldIsImageIdentifier = (
     imageIdentifierFieldMetadataId?: Nullable<string>;
   },
 ): boolean => {
+  // Explicit per-object image identifier takes precedence over any implicit default.
+  if (
+    objectMetadataItem.imageIdentifierFieldMetadataId !== null &&
+    objectMetadataItem.imageIdentifierFieldMetadataId !== undefined
+  ) {
+    return (
+      objectMetadataItem.imageIdentifierFieldMetadataId === fieldMetadataItem.id
+    );
+  }
+
+  // Fallback: Company's domainName is implicitly used to resolve a favicon.
   if (
     objectMetadataItem.nameSingular === 'company' &&
     fieldMetadataItem.name === 'domainName'
@@ -17,7 +28,5 @@ export const checkIfFieldIsImageIdentifier = (
     return true;
   }
 
-  return (
-    objectMetadataItem.imageIdentifierFieldMetadataId === fieldMetadataItem.id
-  );
+  return false;
 };

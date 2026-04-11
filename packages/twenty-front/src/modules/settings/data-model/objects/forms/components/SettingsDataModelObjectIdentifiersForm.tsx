@@ -12,6 +12,7 @@ import { t } from '@lingui/core/macro';
 import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { FieldMetadataType } from 'twenty-shared/types';
 import {
   isLabelIdentifierFieldMetadataTypes,
   isSearchableFieldType,
@@ -20,6 +21,11 @@ import { IconCircleOff, IconPlus, useIcons } from 'twenty-ui/display';
 import { type SelectOption } from 'twenty-ui/input';
 import { themeCssVariables } from 'twenty-ui/theme-constants';
 import { type z } from 'zod';
+
+const IMAGE_IDENTIFIER_FIELD_METADATA_TYPES: FieldMetadataType[] = [
+  FieldMetadataType.TEXT,
+  FieldMetadataType.FILES,
+];
 
 export const settingsDataModelObjectIdentifiersFormSchema =
   objectMetadataItemSchema.pick({
@@ -60,12 +66,16 @@ export const SettingsDataModelObjectIdentifiersForm = ({
   });
   const { updateOneObjectMetadataItem } = useUpdateOneObjectMetadataItem();
 
-  const handleSave = async (
-    formValues: SettingsDataModelObjectIdentifiersFormValues,
+  // Submit only the field that just changed — for standard objects, sending
+  // labelIdentifierFieldMetadataId (even unchanged) is rejected because it is
+  // not in the backend's standard editable-properties list.
+  const handleSaveSingleField = async (
+    fieldName: SettingsDataModelObjectIdentifiers,
+    value: string | null,
   ) => {
     const result = await updateOneObjectMetadataItem({
       idToUpdate: objectMetadataItem.id,
-      updatePayload: formValues,
+      updatePayload: { [fieldName]: value },
     });
 
     if (result.status === 'successful') {
@@ -90,7 +100,21 @@ export const SettingsDataModelObjectIdentifiersForm = ({
         })),
     [getIcon, objectMetadataItem],
   );
-  const imageIdentifierFieldOptions: SelectOption<string | null>[] = [];
+  const imageIdentifierFieldOptions = useMemo(
+    () =>
+      getActiveFieldMetadataItems(objectMetadataItem)
+        .filter(
+          ({ id, type }) =>
+            IMAGE_IDENTIFIER_FIELD_METADATA_TYPES.includes(type) ||
+            objectMetadataItem.imageIdentifierFieldMetadataId === id,
+        )
+        .map<SelectOption<string | null>>((fieldMetadataItem) => ({
+          Icon: getIcon(fieldMetadataItem.icon),
+          label: fieldMetadataItem.label,
+          value: fieldMetadataItem.id,
+        })),
+    [getIcon, objectMetadataItem],
+  );
 
   const emptyOption: SelectOption<string | null> = {
     Icon: IconCircleOff,
@@ -113,7 +137,7 @@ export const SettingsDataModelObjectIdentifiersForm = ({
           label: t`Record image`,
           fieldName: IMAGE_IDENTIFIER_FIELD_METADATA_ID,
           options: imageIdentifierFieldOptions,
-          defaultValue: null,
+          defaultValue: objectMetadataItem.imageIdentifierFieldMetadataId,
         },
       ].map(({ fieldName, label, options, defaultValue }) => (
         <Controller
@@ -130,7 +154,10 @@ export const SettingsDataModelObjectIdentifiersForm = ({
               options={options}
               value={value}
               withSearchInput={label === t`Record label`}
-              disabled={!objectMetadataItem.isCustom || readonly}
+              disabled={
+                (label === t`Record label` && !objectMetadataItem.isCustom) ||
+                readonly
+              }
               callToActionButton={
                 label === t`Record label`
                   ? {
@@ -144,7 +171,7 @@ export const SettingsDataModelObjectIdentifiersForm = ({
               }
               onChange={(value) => {
                 onChange(value);
-                formConfig.handleSubmit(handleSave)();
+                void handleSaveSingleField(fieldName, value);
               }}
             />
           )}

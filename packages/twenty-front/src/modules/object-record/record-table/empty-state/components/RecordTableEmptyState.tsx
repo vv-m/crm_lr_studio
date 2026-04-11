@@ -8,13 +8,19 @@ import { RecordTableEmptyStateRemote } from '@/object-record/record-table/empty-
 import { RecordTableEmptyStateSoftDelete } from '@/object-record/record-table/empty-state/components/RecordTableEmptyStateSoftDelete';
 import { isSoftDeleteFilterActiveComponentState } from '@/object-record/record-table/states/isSoftDeleteFilterActiveComponentState';
 import { useAtomComponentStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomComponentStateValue';
+import { isDefined } from 'twenty-shared/utils';
 
 export const RecordTableEmptyState = () => {
   const { recordTableId, objectNameSingular, objectMetadataItem } =
     useRecordTableContextOrThrow();
 
-  const { totalCount } = useFindManyRecords({ objectNameSingular, limit: 1 });
-  const noRecordAtAll = totalCount === 0;
+  const { totalCount, loading: isTotalCountQueryLoading } = useFindManyRecords(
+    { objectNameSingular, limit: 1 },
+  );
+  const noRecordAtAll =
+    !isTotalCountQueryLoading &&
+    isDefined(totalCount) &&
+    totalCount === 0;
 
   const isRemote = objectMetadataItem.isRemote;
 
@@ -31,6 +37,10 @@ export const RecordTableEmptyState = () => {
 
   if (!hasObjectUpdatePermissions) {
     return <RecordTableEmptyStateReadOnly />;
+  }
+
+  if (isTotalCountQueryLoading) {
+    return null;
   }
 
   if (isRemote) {

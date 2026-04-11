@@ -2,7 +2,7 @@ import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainCo
 import { contextStoreCurrentObjectMetadataItemIdComponentState } from '@/context-store/states/contextStoreCurrentObjectMetadataItemIdComponentState';
 import { contextStoreCurrentViewIdComponentState } from '@/context-store/states/contextStoreCurrentViewIdComponentState';
 import { contextStoreCurrentViewTypeComponentState } from '@/context-store/states/contextStoreCurrentViewTypeComponentState';
-import { getViewType } from '@/context-store/utils/getViewType';
+import { useRecordIndexContextLayoutSync } from '@/lr-record-index-view/hooks/use-record-index-context-layout-sync.hook';
 import { useSetLastVisitedObjectMetadataId } from '@/navigation/hooks/useSetLastVisitedObjectMetadataId';
 import { useSetLastVisitedViewForObjectMetadataNamePlural } from '@/navigation/hooks/useSetLastVisitedViewForObjectMetadataNamePlural';
 import { type EnrichedObjectMetadataItem } from '@/object-metadata/types/EnrichedObjectMetadataItem';
@@ -56,6 +56,18 @@ export const MainContextStoreProviderEffect = ({
     viewId: viewId ?? '',
   });
 
+  useRecordIndexContextLayoutSync({
+    isSettingsPage,
+    isRecordShowPage,
+    isRecordIndexPage,
+    view,
+    viewId,
+    contextStoreCurrentViewId,
+    setContextStoreCurrentViewId,
+    contextStoreCurrentViewType,
+    setContextStoreCurrentViewType,
+  });
+
   useEffect(() => {
     if (contextStoreCurrentObjectMetadataItemId !== objectMetadataItem?.id) {
       setContextStoreCurrentObjectMetadataItemId(objectMetadataItem?.id);
@@ -80,42 +92,6 @@ export const MainContextStoreProviderEffect = ({
     setLastVisitedObjectMetadataId,
     setLastVisitedViewForObjectMetadataNamePlural,
     viewId,
-  ]);
-
-  useEffect(() => {
-    if (isSettingsPage) {
-      setContextStoreCurrentViewId(undefined);
-      return;
-    }
-
-    if (contextStoreCurrentViewId !== viewId) {
-      setContextStoreCurrentViewId(viewId);
-    }
-  }, [
-    contextStoreCurrentViewId,
-    isSettingsPage,
-    setContextStoreCurrentViewId,
-    viewId,
-  ]);
-
-  useEffect(() => {
-    const viewType = getViewType({
-      isSettingsPage,
-      isRecordShowPage,
-      isRecordIndexPage,
-      view,
-    });
-
-    if (contextStoreCurrentViewType !== viewType) {
-      setContextStoreCurrentViewType(viewType);
-    }
-  }, [
-    contextStoreCurrentViewType,
-    setContextStoreCurrentViewType,
-    view,
-    isSettingsPage,
-    isRecordShowPage,
-    isRecordIndexPage,
   ]);
 
   return null;

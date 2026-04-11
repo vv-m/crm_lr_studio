@@ -1,3 +1,7 @@
+import {
+  LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_ID,
+  LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_WIDGET_ID,
+} from '@/lr-opportunity-products/constants/lr-opportunity-products-widget-id.constant';
 import { DEFAULT_OPPORTUNITY_RECORD_PAGE_LAYOUT_ID } from '@/page-layout/constants/DefaultOpportunityRecordPageLayoutId';
 import { type PageLayout } from '@/page-layout/types/PageLayout';
 import {
@@ -35,6 +39,44 @@ export const DEFAULT_OPPORTUNITY_RECORD_PAGE_LAYOUT: PageLayout = {
           id: 'opportunity-widget-fields',
           pageLayoutTabId: 'opportunity-tab-fields',
           title: 'Fields',
+          type: WidgetType.FIELDS,
+          objectMetadataId: null,
+          gridPosition: {
+            __typename: 'GridPosition',
+            row: 0,
+            column: 0,
+            rowSpan: 12,
+            columnSpan: 12,
+          },
+          configuration: {
+            __typename: 'FieldsConfiguration',
+            configurationType: WidgetConfigurationType.FIELDS,
+            viewId: null,
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          deletedAt: null,
+        },
+      ],
+    },
+    {
+      __typename: 'PageLayoutTab',
+      applicationId: '',
+      id: LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_ID,
+      title: 'Товары',
+      icon: 'IconBox',
+      position: 150,
+      layoutMode: PageLayoutTabLayoutMode.CANVAS,
+      pageLayoutId: DEFAULT_OPPORTUNITY_RECORD_PAGE_LAYOUT_ID,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      widgets: [
+        {
+          __typename: 'PageLayoutWidget',
+          id: LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_WIDGET_ID,
+          pageLayoutTabId: LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_ID,
+          title: 'Товары',
           type: WidgetType.FIELDS,
           objectMetadataId: null,
           gridPosition: {

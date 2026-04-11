@@ -23,8 +23,10 @@ import { computeStandardMessageThreadViews } from 'src/engine/workspace-manager/
 import { computeStandardMessageViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-message-views.util';
 import { computeStandardNoteTargetViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-note-target-views.util';
 import { computeStandardNoteViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-note-views.util';
+import { computeStandardOpportunityProductViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-opportunity-product-views.util';
 import { computeStandardOpportunityViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-opportunity-views.util';
 import { computeStandardPersonViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-person-views.util';
+import { computeStandardProductViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-product-views.util';
 import { computeStandardTaskTargetViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-task-target-views.util';
 import { computeStandardTaskViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-task-views.util';
 import { computeStandardTimelineActivityViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-timeline-activity-views.util';
@@ -62,7 +64,9 @@ const STANDARD_FLAT_VIEW_METADATA_BUILDERS_BY_OBJECT_NAME = {
   note: computeStandardNoteViews,
   noteTarget: computeStandardNoteTargetViews,
   opportunity: computeStandardOpportunityViews,
+  opportunityProduct: computeStandardOpportunityProductViews,
   person: computeStandardPersonViews,
+  product: computeStandardProductViews,
   task: computeStandardTaskViews,
   taskTarget: computeStandardTaskTargetViews,
   timelineActivity: computeStandardTimelineActivityViews,

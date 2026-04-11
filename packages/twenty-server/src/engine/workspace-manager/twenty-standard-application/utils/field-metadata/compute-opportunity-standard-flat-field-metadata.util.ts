@@ -472,4 +472,26 @@ export const buildOpportunityStandardFlatFieldMetadatas = ({
     twentyStandardApplicationId,
     now,
   }),
+  opportunityProducts: createStandardRelationFieldFlatMetadata({
+    objectName,
+    workspaceId,
+    context: {
+      type: FieldMetadataType.RELATION,
+      morphId: null,
+      fieldName: 'opportunityProducts',
+      label: i18nLabel(msg`Products`),
+      description: i18nLabel(msg`Products linked to this opportunity`),
+      icon: 'IconShoppingCart',
+      isNullable: true,
+      targetObjectName: 'opportunityProduct',
+      targetFieldName: 'opportunity',
+      settings: {
+        relationType: RelationType.ONE_TO_MANY,
+      },
+    },
+    standardObjectMetadataRelatedEntityIds,
+    dependencyFlatEntityMaps,
+    twentyStandardApplicationId,
+    now,
+  }),
 });

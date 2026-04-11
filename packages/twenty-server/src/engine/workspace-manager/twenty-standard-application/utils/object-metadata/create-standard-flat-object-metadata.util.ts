@@ -568,6 +568,37 @@ export const STANDARD_FLAT_OBJECT_METADATA_BUILDERS_BY_OBJECT_NAME = {
       twentyStandardApplicationId,
       now,
     }),
+  opportunityProduct: ({
+    now,
+    workspaceId,
+    standardObjectMetadataRelatedEntityIds,
+    twentyStandardApplicationId,
+    dependencyFlatEntityMaps,
+  }: Omit<
+    CreateStandardObjectArgs<'opportunityProduct'>,
+    'context' | 'objectName'
+  >) =>
+    createStandardObjectFlatMetadata({
+      objectName: 'opportunityProduct',
+      dependencyFlatEntityMaps,
+      context: {
+        universalIdentifier:
+          STANDARD_OBJECTS.opportunityProduct.universalIdentifier,
+        nameSingular: 'opportunityProduct',
+        namePlural: 'opportunityProducts',
+        labelSingular: i18nLabel(msg`Opportunity product`),
+        labelPlural: i18nLabel(msg`Opportunity products`),
+        description: i18nLabel(msg`Product line on an opportunity`),
+        icon: 'IconList',
+        isSystem: true,
+        isAuditLogged: false,
+        labelIdentifierFieldMetadataName: 'id',
+      },
+      workspaceId,
+      standardObjectMetadataRelatedEntityIds,
+      twentyStandardApplicationId,
+      now,
+    }),
   person: ({
     now,
     workspaceId,
@@ -595,6 +626,33 @@ export const STANDARD_FLAT_OBJECT_METADATA_BUILDERS_BY_OBJECT_NAME = {
         ],
         labelIdentifierFieldMetadataName: 'name',
         imageIdentifierFieldMetadataName: 'avatarUrl',
+      },
+      workspaceId,
+      standardObjectMetadataRelatedEntityIds,
+      twentyStandardApplicationId,
+      now,
+    }),
+  product: ({
+    now,
+    workspaceId,
+    standardObjectMetadataRelatedEntityIds,
+    twentyStandardApplicationId,
+    dependencyFlatEntityMaps,
+  }: Omit<CreateStandardObjectArgs<'product'>, 'context' | 'objectName'>) =>
+    createStandardObjectFlatMetadata({
+      objectName: 'product',
+      dependencyFlatEntityMaps,
+      context: {
+        universalIdentifier: STANDARD_OBJECTS.product.universalIdentifier,
+        nameSingular: 'product',
+        namePlural: 'products',
+        labelSingular: i18nLabel(msg`Product`),
+        labelPlural: i18nLabel(msg`Products`),
+        description: i18nLabel(msg`A product in the catalog`),
+        icon: 'IconShoppingCart',
+        isSearchable: true,
+        isAuditLogged: true,
+        labelIdentifierFieldMetadataName: 'name',
       },
       workspaceId,
       standardObjectMetadataRelatedEntityIds,

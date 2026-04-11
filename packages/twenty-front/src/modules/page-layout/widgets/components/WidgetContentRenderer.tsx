@@ -1,3 +1,8 @@
+import {
+  LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_ID,
+  LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_WIDGET_ID,
+} from '@/lr-opportunity-products/constants/lr-opportunity-products-widget-id.constant';
+import { OpportunityProductsRecordTab } from '@/lr-opportunity-products/components/OpportunityProductsRecordTab';
 import { type PageLayoutWidget } from '@/page-layout/types/PageLayoutWidget';
 import { CalendarWidget } from '@/page-layout/widgets/calendar/components/CalendarWidget';
 import { EmailThreadWidget } from '@/page-layout/widgets/email-thread/components/EmailThreadWidget';
@@ -23,9 +28,19 @@ type WidgetContentRendererProps = {
   widget: PageLayoutWidget;
 };
 
+const isLrOpportunityProductsRecordTabWidget = (
+  widget: PageLayoutWidget,
+): boolean =>
+  widget.id === LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_WIDGET_ID ||
+  widget.pageLayoutTabId === LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_ID;
+
 export const WidgetContentRenderer = ({
   widget,
 }: WidgetContentRendererProps) => {
+  if (isLrOpportunityProductsRecordTabWidget(widget)) {
+    return <OpportunityProductsRecordTab />;
+  }
+
   switch (widget.type) {
     case WidgetType.GRAPH:
       return <GraphWidgetRenderer widget={widget} />;

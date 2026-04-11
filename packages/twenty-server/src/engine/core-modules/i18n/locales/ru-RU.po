@@ -7105,7 +7105,7 @@ msgstr ""
 #. js-lingui-id: cklVjM
 #: src/engine/metadata-modules/page-layout-tab/constants/standard-page-layout-tab-titles.ts
 msgid "Timeline"
-msgstr "Временная шкала"
+msgstr "История"
 
 #. js-lingui-id: az1boY
 #: src/engine/workspace-manager/twenty-standard-application/utils/object-metadata/create-standard-flat-object-metadata.util.ts

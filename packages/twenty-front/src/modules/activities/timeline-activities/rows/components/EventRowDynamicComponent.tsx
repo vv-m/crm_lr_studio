@@ -3,6 +3,7 @@ import { EventRowCalendarEvent } from '@/activities/timeline-activities/rows/cal
 import { type EventRowDynamicComponentProps } from '@/activities/timeline-activities/rows/components/EventRowDynamicComponent.types';
 import { EventRowMainObject } from '@/activities/timeline-activities/rows/main-object/components/EventRowMainObject';
 import { EventRowMessage } from '@/activities/timeline-activities/rows/message/components/EventRowMessage';
+import { EventRowOpportunityProduct } from '@/lr-product-timeline/components/EventRowOpportunityProduct';
 import { CoreObjectNameSingular } from 'twenty-shared/types';
 
 export const EventRowDynamicComponent = ({
@@ -13,6 +14,19 @@ export const EventRowDynamicComponent = ({
   authorFullName,
   createdAt,
 }: EventRowDynamicComponentProps) => {
+  if (event.name.startsWith('linked-opportunityProduct.')) {
+    return (
+      <EventRowOpportunityProduct
+        labelIdentifierValue={labelIdentifierValue}
+        event={event}
+        mainObjectMetadataItem={mainObjectMetadataItem}
+        linkedObjectMetadataItem={linkedObjectMetadataItem}
+        authorFullName={authorFullName}
+        createdAt={createdAt}
+      />
+    );
+  }
+
   switch (linkedObjectMetadataItem?.nameSingular) {
     case 'calendarEvent':
       return (

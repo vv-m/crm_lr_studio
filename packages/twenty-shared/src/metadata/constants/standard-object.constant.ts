@@ -1933,6 +1933,9 @@ export const STANDARD_OBJECTS = {
       timelineActivities: {
         universalIdentifier: '20202020-30e2-421f-96c7-19c69d1cf631',
       },
+      opportunityProducts: {
+        universalIdentifier: 'd21a1e9b-3c0b-421b-9a08-630185698419',
+      },
       searchVector: {
         universalIdentifier: '428a0da5-4b2e-4ce3-b695-89a8b384e6e3',
       },
@@ -2070,6 +2073,167 @@ export const STANDARD_OBJECTS = {
           },
           timelineActivities: {
             universalIdentifier: '20202020-af03-4a03-8a03-0aa0b1ca3210',
+          },
+        },
+      },
+    },
+  },
+  opportunityProduct: {
+    universalIdentifier: 'ecb3eeda-a6fa-4e5d-adf1-aef870ecd233',
+    fields: {
+      id: { universalIdentifier: '0c0cb27d-ffe2-4863-bba9-3cb46d9b523d' },
+      createdAt: {
+        universalIdentifier: '848599b1-5880-447a-b971-db52ab6b91c9',
+      },
+      updatedAt: {
+        universalIdentifier: '64f80ea0-4afd-4a12-aa6c-960965ebddb9',
+      },
+      deletedAt: {
+        universalIdentifier: 'f8d77089-cf73-46dd-8423-bbd19df7e14b',
+      },
+      opportunity: {
+        universalIdentifier: 'd0f4fe0b-a58b-4652-bd44-98f298c1abae',
+      },
+      product: {
+        universalIdentifier: 'f16e12c1-42c8-4969-af08-6c40311dfb5c',
+      },
+      quantity: {
+        universalIdentifier: '0892b093-f2fa-4db0-9918-981fc329e8c7',
+      },
+      unitPrice: {
+        universalIdentifier: 'cba193b2-be38-4f25-8ac5-0dd59cbdbbf7',
+      },
+      createdBy: {
+        universalIdentifier: 'eff62289-15bd-4e7d-a8ac-8ad94ced8c6f',
+      },
+      updatedBy: {
+        universalIdentifier: 'a5c571a3-fbd6-45c6-a01b-166ba675ea9b',
+      },
+      position: {
+        universalIdentifier: 'ef88b4b4-ba22-41b3-abaa-4158d69d75ae',
+      },
+      searchVector: {
+        universalIdentifier: '0f151c8e-0259-492c-a976-ece888ae1b5b',
+      },
+    },
+    indexes: {
+      opportunityIdIndex: {
+        universalIdentifier: '949732f8-dbc9-41b0-902b-a605443d6136',
+      },
+      productIdIndex: {
+        universalIdentifier: 'bddbe801-3352-4502-ba5e-80187ae4c826',
+      },
+      opportunityIdProductIdUniqueIndex: {
+        universalIdentifier: 'eb9b891d-f5cb-4fb8-92d2-203015863bb9',
+      },
+    },
+    views: {
+      allOpportunityProducts: {
+        universalIdentifier: 'be36f168-a0c7-451d-b351-4c3a49972ea5',
+        viewFields: {
+          id: {
+            universalIdentifier: '30ebec22-1c0b-497c-9e90-1abb697d9b16',
+          },
+          opportunity: {
+            universalIdentifier: '625b0b5b-f0e0-4570-aece-1da71a1085b5',
+          },
+          product: {
+            universalIdentifier: '0139af43-49f8-47be-8f94-285f849bd62b',
+          },
+          quantity: {
+            universalIdentifier: '54f74f6a-7f23-4fb0-bcc3-964f18beb066',
+          },
+          unitPrice: {
+            universalIdentifier: 'aa4e53c0-e4bc-4da4-9605-bc128291ed24',
+          },
+        },
+      },
+    },
+  },
+  product: {
+    universalIdentifier: '3b5878d4-4c71-47fb-b269-223f547526e1',
+    fields: {
+      id: { universalIdentifier: '23b8cd91-0223-41cb-8479-2ebf7d777545' },
+      createdAt: {
+        universalIdentifier: '43ff85d1-5331-4d95-a8d2-65bf43c43a1e',
+      },
+      updatedAt: {
+        universalIdentifier: '9a5e487c-379d-4d84-9e2d-4ec92335a536',
+      },
+      deletedAt: {
+        universalIdentifier: '2fd8453b-b907-4cb1-9163-579dfad661e2',
+      },
+      name: { universalIdentifier: 'f341154a-4bda-49e5-ae49-9ca72da9644d' },
+      artikul: {
+        universalIdentifier: '7c91a2b3-c4d5-6e7f-8901-2345abcdef67',
+      },
+      currentPrice: {
+        universalIdentifier: 'e490357a-5d52-4f6c-bacd-9b01443fbc92',
+      },
+      opportunityProducts: {
+        universalIdentifier: 'f6988be5-46fe-4d67-bf6e-488f9f0691be',
+      },
+      createdBy: {
+        universalIdentifier: '3da48d46-caca-419c-88d2-7423912c1f2e',
+      },
+      updatedBy: {
+        universalIdentifier: '36043456-35d5-4c6f-8865-47f7a5b1e708',
+      },
+      position: {
+        universalIdentifier: 'b6778122-2e65-413f-88cf-351c619dff44',
+      },
+      searchVector: {
+        universalIdentifier: '4360700d-8ee6-4e7e-bcbd-1fe0fedfb5a2',
+      },
+    },
+    indexes: {
+      searchVectorGinIndex: {
+        universalIdentifier: '0aa60e91-9c73-4a2b-83f8-ac883b4ee2fd',
+      },
+    },
+    views: {
+      allProducts: {
+        universalIdentifier: 'c1ebc4d4-7b5c-4c26-a6d7-656eb29bde6b',
+        viewFields: {
+          name: {
+            universalIdentifier: 'cd8ad5da-c732-42f6-8e99-28941a987087',
+          },
+          artikul: {
+            universalIdentifier: '8da2b3c4-d5e6-7f8a-9012-3456bcdef678',
+          },
+          currentPrice: {
+            universalIdentifier: 'b02b65d1-5e4d-424c-b024-900f28b7cdd3',
+          },
+          createdAt: {
+            universalIdentifier: 'a9247ce4-d9f2-4d36-bd85-73231e4cc8a5',
+          },
+        },
+      },
+      productRecordPageFields: {
+        universalIdentifier: 'e0c65b07-9ade-448c-a007-2f4f484ac403',
+        viewFieldGroups: {
+          general: {
+            universalIdentifier: '993d1595-4bb0-4b0d-a46e-4552e328342b',
+          },
+          system: {
+            universalIdentifier: '9aa4b282-34e9-4d50-853b-626f4685cb85',
+          },
+        },
+        viewFields: {
+          name: {
+            universalIdentifier: 'a543a2ce-7f9a-43fb-94c3-25832bc4e2b2',
+          },
+          artikul: {
+            universalIdentifier: '9eb3c4d5-e6f7-8a9b-0123-4567cdef789a',
+          },
+          currentPrice: {
+            universalIdentifier: 'a965a3b1-2799-4da3-ac6e-96285cabebec',
+          },
+          createdAt: {
+            universalIdentifier: 'bce5c192-b705-4910-bc5d-156d1452d58c',
+          },
+          createdBy: {
+            universalIdentifier: 'e34bfcd4-a98f-4d1b-b733-9e5188d6fbe3',
           },
         },
       },

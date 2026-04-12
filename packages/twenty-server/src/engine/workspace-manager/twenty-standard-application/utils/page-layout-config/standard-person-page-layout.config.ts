@@ -83,6 +83,16 @@ const PERSON_PAGE_TABS = {
       },
     },
   },
+  dialogs: {
+    universalIdentifier: '20202020-ab02-4002-8002-ae0a1ea11208',
+    ...TAB_PROPS.dialogs,
+    widgets: {
+      dialogs: {
+        universalIdentifier: '20202020-ac02-4002-8002-ae0a1ea11281',
+        ...WIDGET_PROPS.dialogs,
+      },
+    },
+  },
   emails: {
     universalIdentifier: '20202020-ab02-4002-8002-ae0a1ea11206',
     ...TAB_PROPS.emails,

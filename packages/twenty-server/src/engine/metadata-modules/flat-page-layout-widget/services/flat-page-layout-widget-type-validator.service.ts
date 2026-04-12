@@ -95,6 +95,7 @@ export class FlatPageLayoutWidgetTypeValidatorService {
       EMAIL_THREAD: validateSimpleRecordPageWidgetForCreation(
         WidgetConfigurationType.EMAIL_THREAD,
       ),
+      DIALOGS: () => [],
     };
 
   private readonly PAGE_LAYOUT_WIDGET_TYPE_VALIDATOR_FOR_UPDATE_HASHMAP: FlatPageLayoutWidgetTypeValidatorForUpdate =
@@ -149,6 +150,7 @@ export class FlatPageLayoutWidgetTypeValidatorService {
       EMAIL_THREAD: validateSimpleRecordPageWidgetForUpdate(
         WidgetConfigurationType.EMAIL_THREAD,
       ),
+      DIALOGS: () => [],
     };
 
   public validateFlatPageLayoutWidgetTypeSpecificitiesForCreation(

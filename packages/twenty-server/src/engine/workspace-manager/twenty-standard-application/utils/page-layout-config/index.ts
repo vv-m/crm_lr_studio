@@ -1,4 +1,7 @@
 export { STANDARD_BLOCKLIST_PAGE_LAYOUT_CONFIG } from './standard-blocklist-page-layout.config';
+export { STANDARD_DIALOG_PAGE_LAYOUT_CONFIG } from './standard-dialog-page-layout.config';
+export { STANDARD_DIALOG_MESSAGE_PAGE_LAYOUT_CONFIG } from './standard-dialog-message-page-layout.config';
+export { STANDARD_DIALOG_TARGET_PAGE_LAYOUT_CONFIG } from './standard-dialog-target-page-layout.config';
 export { STANDARD_CALENDAR_CHANNEL_EVENT_ASSOCIATION_PAGE_LAYOUT_CONFIG } from './standard-calendar-channel-event-association-page-layout.config';
 export { STANDARD_CALENDAR_CHANNEL_PAGE_LAYOUT_CONFIG } from './standard-calendar-channel-page-layout.config';
 export { STANDARD_CALENDAR_EVENT_PARTICIPANT_PAGE_LAYOUT_CONFIG } from './standard-calendar-event-participant-page-layout.config';
@@ -27,4 +30,6 @@ export { STANDARD_TASK_PAGE_LAYOUT_CONFIG } from './standard-task-page-layout.co
 export { STANDARD_WORKFLOW_AUTOMATED_TRIGGER_PAGE_LAYOUT_CONFIG } from './standard-workflow-automated-trigger-page-layout.config';
 export { STANDARD_WORKFLOW_PAGE_LAYOUT_CONFIG } from './standard-workflow-page-layout.config';
 export { STANDARD_WORKFLOW_RUN_PAGE_LAYOUT_CONFIG } from './standard-workflow-run-page-layout.config';
+export { STANDARD_WAZZUP_ACCOUNT_PAGE_LAYOUT_CONFIG } from './standard-wazzup-account-page-layout.config';
+export { STANDARD_WAZZUP_CHANNEL_PAGE_LAYOUT_CONFIG } from './standard-wazzup-channel-page-layout.config';
 export { STANDARD_WORKFLOW_VERSION_PAGE_LAYOUT_CONFIG } from './standard-workflow-version-page-layout.config';

@@ -1,3 +1,7 @@
+import {
+  DIALOG_RECORD_TAB_ID,
+  DIALOG_RECORD_TAB_WIDGET_ID,
+} from '@/dialog/constants/dialog-widget-id.constant';
 import { DEFAULT_PERSON_RECORD_PAGE_LAYOUT_ID } from '@/page-layout/constants/DefaultPersonRecordPageLayoutId';
 import { type PageLayout } from '@/page-layout/types/PageLayout';
 import {
@@ -194,6 +198,44 @@ export const DEFAULT_PERSON_RECORD_PAGE_LAYOUT: PageLayout = {
             row: 0,
             column: 0,
             rowSpan: 6,
+            columnSpan: 12,
+          },
+          configuration: {
+            __typename: 'FieldsConfiguration',
+            configurationType: WidgetConfigurationType.FIELDS,
+            viewId: null,
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          deletedAt: null,
+        },
+      ],
+    },
+    {
+      __typename: 'PageLayoutTab',
+      applicationId: '',
+      id: DIALOG_RECORD_TAB_ID,
+      title: 'Dialogs',
+      icon: 'IconMessageCircle',
+      position: 550,
+      layoutMode: PageLayoutTabLayoutMode.CANVAS,
+      pageLayoutId: DEFAULT_PERSON_RECORD_PAGE_LAYOUT_ID,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      widgets: [
+        {
+          __typename: 'PageLayoutWidget',
+          id: DIALOG_RECORD_TAB_WIDGET_ID,
+          pageLayoutTabId: DIALOG_RECORD_TAB_ID,
+          title: 'Dialogs',
+          type: WidgetType.FIELDS,
+          objectMetadataId: null,
+          gridPosition: {
+            __typename: 'GridPosition',
+            row: 0,
+            column: 0,
+            rowSpan: 12,
             columnSpan: 12,
           },
           configuration: {

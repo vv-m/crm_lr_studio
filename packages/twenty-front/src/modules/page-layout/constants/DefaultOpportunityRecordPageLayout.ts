@@ -1,4 +1,8 @@
 import {
+  DIALOG_RECORD_TAB_ID,
+  DIALOG_RECORD_TAB_WIDGET_ID,
+} from '@/dialog/constants/dialog-widget-id.constant';
+import {
   LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_ID,
   LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_WIDGET_ID,
 } from '@/lr-opportunity-products/constants/lr-opportunity-products-widget-id.constant';
@@ -236,6 +240,44 @@ export const DEFAULT_OPPORTUNITY_RECORD_PAGE_LAYOUT: PageLayout = {
             row: 0,
             column: 0,
             rowSpan: 6,
+            columnSpan: 12,
+          },
+          configuration: {
+            __typename: 'FieldsConfiguration',
+            configurationType: WidgetConfigurationType.FIELDS,
+            viewId: null,
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          deletedAt: null,
+        },
+      ],
+    },
+    {
+      __typename: 'PageLayoutTab',
+      applicationId: '',
+      id: DIALOG_RECORD_TAB_ID,
+      title: 'Dialogs',
+      icon: 'IconMessageCircle',
+      position: 550,
+      layoutMode: PageLayoutTabLayoutMode.CANVAS,
+      pageLayoutId: DEFAULT_OPPORTUNITY_RECORD_PAGE_LAYOUT_ID,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      deletedAt: null,
+      widgets: [
+        {
+          __typename: 'PageLayoutWidget',
+          id: DIALOG_RECORD_TAB_WIDGET_ID,
+          pageLayoutTabId: DIALOG_RECORD_TAB_ID,
+          title: 'Dialogs',
+          type: WidgetType.FIELDS,
+          objectMetadataId: null,
+          gridPosition: {
+            __typename: 'GridPosition',
+            row: 0,
+            column: 0,
+            rowSpan: 12,
             columnSpan: 12,
           },
           configuration: {

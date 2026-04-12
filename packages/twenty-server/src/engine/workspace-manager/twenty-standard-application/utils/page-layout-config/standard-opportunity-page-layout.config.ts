@@ -92,6 +92,16 @@ const OPPORTUNITY_PAGE_TABS = {
       },
     },
   },
+  dialogs: {
+    universalIdentifier: '20202020-ab03-4003-8003-0aa0b1ca1308',
+    ...TAB_PROPS.dialogs,
+    widgets: {
+      dialogs: {
+        universalIdentifier: '20202020-ac03-4003-8003-0aa0b1ca1381',
+        ...WIDGET_PROPS.dialogs,
+      },
+    },
+  },
   emails: {
     universalIdentifier: '20202020-ab03-4003-8003-0aa0b1ca1306',
     ...TAB_PROPS.emails,

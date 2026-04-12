@@ -130,6 +130,12 @@ export const TAB_PROPS = {
     icon: 'IconMail',
     layoutMode: PageLayoutTabLayoutMode.CANVAS,
   },
+  dialogs: {
+    title: 'Dialogs',
+    position: 55,
+    icon: 'IconMessageCircle',
+    layoutMode: PageLayoutTabLayoutMode.CANVAS,
+  },
   calendar: {
     title: 'Calendar',
     position: 70,
@@ -196,6 +202,12 @@ export const WIDGET_PROPS = {
   calendar: {
     title: 'Calendar',
     type: WidgetType.CALENDAR,
+    gridPosition: GRID_POSITIONS.HALF_HEIGHT,
+    position: CANVAS_LAYOUT_POSITIONS.DEFAULT,
+  },
+  dialogs: {
+    title: 'Dialogs',
+    type: WidgetType.DIALOGS,
     gridPosition: GRID_POSITIONS.HALF_HEIGHT,
     position: CANVAS_LAYOUT_POSITIONS.DEFAULT,
   },

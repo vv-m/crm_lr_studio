@@ -14,6 +14,9 @@ import { computeStandardCalendarEventViews } from 'src/engine/workspace-manager/
 import { computeStandardCompanyViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-company-views.util';
 import { computeStandardConnectedAccountViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-connected-account-views.util';
 import { computeStandardDashboardViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-dashboard-views.util';
+import { computeStandardDialogViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-dialog-views.util';
+import { computeStandardDialogMessageViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-dialog-message-views.util';
+import { computeStandardDialogTargetViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-dialog-target-views.util';
 import { computeStandardMessageChannelMessageAssociationMessageFolderViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-message-channel-message-association-message-folder-views.util';
 import { computeStandardMessageChannelMessageAssociationViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-message-channel-message-association-views.util';
 import { computeStandardMessageChannelViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-message-channel-views.util';
@@ -34,6 +37,8 @@ import { computeStandardWorkflowAutomatedTriggerViews } from 'src/engine/workspa
 import { computeStandardWorkflowRunViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-workflow-run-views.util';
 import { computeStandardWorkflowVersionViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-workflow-version-views.util';
 import { computeStandardWorkflowViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-workflow-views.util';
+import { computeStandardWazzupAccountViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-wazzup-account-views.util';
+import { computeStandardWazzupChannelViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-wazzup-channel-views.util';
 import { computeStandardWorkspaceMemberViews } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/compute-standard-workspace-member-views.util';
 import { type CreateStandardViewArgs } from 'src/engine/workspace-manager/twenty-standard-application/utils/view/create-standard-view-flat-metadata.util';
 
@@ -52,6 +57,9 @@ const STANDARD_FLAT_VIEW_METADATA_BUILDERS_BY_OBJECT_NAME = {
   company: computeStandardCompanyViews,
   connectedAccount: computeStandardConnectedAccountViews,
   dashboard: computeStandardDashboardViews,
+  dialog: computeStandardDialogViews,
+  dialogMessage: computeStandardDialogMessageViews,
+  dialogTarget: computeStandardDialogTargetViews,
   message: computeStandardMessageViews,
   messageChannel: computeStandardMessageChannelViews,
   messageChannelMessageAssociation:
@@ -74,6 +82,8 @@ const STANDARD_FLAT_VIEW_METADATA_BUILDERS_BY_OBJECT_NAME = {
   workflowAutomatedTrigger: computeStandardWorkflowAutomatedTriggerViews,
   workflowRun: computeStandardWorkflowRunViews,
   workflowVersion: computeStandardWorkflowVersionViews,
+  wazzupAccount: computeStandardWazzupAccountViews,
+  wazzupChannel: computeStandardWazzupChannelViews,
   workspaceMember: computeStandardWorkspaceMemberViews,
 } as const satisfies {
   [P in AllStandardObjectName]?: StandardViewBuilder<P>;

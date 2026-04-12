@@ -185,6 +185,94 @@ export const STANDARD_FLAT_OBJECT_METADATA_BUILDERS_BY_OBJECT_NAME = {
       twentyStandardApplicationId,
       now,
     }),
+  dialog: ({
+    now,
+    workspaceId,
+    standardObjectMetadataRelatedEntityIds,
+    twentyStandardApplicationId,
+    dependencyFlatEntityMaps,
+  }: Omit<CreateStandardObjectArgs<'dialog'>, 'context' | 'objectName'>) =>
+    createStandardObjectFlatMetadata({
+      objectName: 'dialog',
+      dependencyFlatEntityMaps,
+      context: {
+        universalIdentifier: STANDARD_OBJECTS.dialog.universalIdentifier,
+        nameSingular: 'dialog',
+        namePlural: 'dialogs',
+        labelSingular: i18nLabel(msg`Dialog`),
+        labelPlural: i18nLabel(msg`Dialogs`),
+        description: i18nLabel(msg`A messaging dialog with a client`),
+        icon: 'IconMessageCircle',
+        isSearchable: true,
+        labelIdentifierFieldMetadataName: 'name',
+      },
+      workspaceId,
+      standardObjectMetadataRelatedEntityIds,
+      twentyStandardApplicationId,
+      now,
+    }),
+  dialogMessage: ({
+    now,
+    workspaceId,
+    standardObjectMetadataRelatedEntityIds,
+    twentyStandardApplicationId,
+    dependencyFlatEntityMaps,
+  }: Omit<
+    CreateStandardObjectArgs<'dialogMessage'>,
+    'context' | 'objectName'
+  >) =>
+    createStandardObjectFlatMetadata({
+      objectName: 'dialogMessage',
+      dependencyFlatEntityMaps,
+      context: {
+        universalIdentifier:
+          STANDARD_OBJECTS.dialogMessage.universalIdentifier,
+        nameSingular: 'dialogMessage',
+        namePlural: 'dialogMessages',
+        labelSingular: i18nLabel(msg`Dialog Message`),
+        labelPlural: i18nLabel(msg`Dialog Messages`),
+        description: i18nLabel(msg`A message within a dialog`),
+        icon: 'IconMessage',
+        isSystem: true,
+        labelIdentifierFieldMetadataName: 'name',
+      },
+      workspaceId,
+      standardObjectMetadataRelatedEntityIds,
+      twentyStandardApplicationId,
+      now,
+    }),
+  dialogTarget: ({
+    now,
+    workspaceId,
+    standardObjectMetadataRelatedEntityIds,
+    twentyStandardApplicationId,
+    dependencyFlatEntityMaps,
+  }: Omit<
+    CreateStandardObjectArgs<'dialogTarget'>,
+    'context' | 'objectName'
+  >) =>
+    createStandardObjectFlatMetadata({
+      objectName: 'dialogTarget',
+      dependencyFlatEntityMaps,
+      context: {
+        universalIdentifier:
+          STANDARD_OBJECTS.dialogTarget.universalIdentifier,
+        nameSingular: 'dialogTarget',
+        namePlural: 'dialogTargets',
+        labelSingular: i18nLabel(msg`Dialog Target`),
+        labelPlural: i18nLabel(msg`Dialog Targets`),
+        description: i18nLabel(
+          msg`A dialog target — links a dialog to a record`,
+        ),
+        icon: 'IconCheckbox',
+        isSystem: true,
+        labelIdentifierFieldMetadataName: 'id',
+      },
+      workspaceId,
+      standardObjectMetadataRelatedEntityIds,
+      twentyStandardApplicationId,
+      now,
+    }),
   company: ({
     now,
     workspaceId,
@@ -885,6 +973,68 @@ export const STANDARD_FLAT_OBJECT_METADATA_BUILDERS_BY_OBJECT_NAME = {
         isSearchable: true,
         labelIdentifierFieldMetadataName: 'name',
         imageIdentifierFieldMetadataName: 'avatarUrl',
+      },
+      workspaceId,
+      standardObjectMetadataRelatedEntityIds,
+      twentyStandardApplicationId,
+      now,
+    }),
+  wazzupAccount: ({
+    now,
+    workspaceId,
+    standardObjectMetadataRelatedEntityIds,
+    twentyStandardApplicationId,
+    dependencyFlatEntityMaps,
+  }: Omit<
+    CreateStandardObjectArgs<'wazzupAccount'>,
+    'context' | 'objectName'
+  >) =>
+    createStandardObjectFlatMetadata({
+      objectName: 'wazzupAccount',
+      dependencyFlatEntityMaps,
+      context: {
+        universalIdentifier:
+          STANDARD_OBJECTS.wazzupAccount.universalIdentifier,
+        nameSingular: 'wazzupAccount',
+        namePlural: 'wazzupAccounts',
+        labelSingular: i18nLabel(msg`Wazzup Account`),
+        labelPlural: i18nLabel(msg`Wazzup Accounts`),
+        description: i18nLabel(msg`A Wazzup integration account`),
+        icon: 'IconBrandTelegram',
+        isSystem: false,
+        labelIdentifierFieldMetadataName: 'name',
+      },
+      workspaceId,
+      standardObjectMetadataRelatedEntityIds,
+      twentyStandardApplicationId,
+      now,
+    }),
+  wazzupChannel: ({
+    now,
+    workspaceId,
+    standardObjectMetadataRelatedEntityIds,
+    twentyStandardApplicationId,
+    dependencyFlatEntityMaps,
+  }: Omit<
+    CreateStandardObjectArgs<'wazzupChannel'>,
+    'context' | 'objectName'
+  >) =>
+    createStandardObjectFlatMetadata({
+      objectName: 'wazzupChannel',
+      dependencyFlatEntityMaps,
+      context: {
+        universalIdentifier:
+          STANDARD_OBJECTS.wazzupChannel.universalIdentifier,
+        nameSingular: 'wazzupChannel',
+        namePlural: 'wazzupChannels',
+        labelSingular: i18nLabel(msg`Wazzup Channel`),
+        labelPlural: i18nLabel(msg`Wazzup Channels`),
+        description: i18nLabel(
+          msg`A messaging channel connected via Wazzup`,
+        ),
+        icon: 'IconMessage2',
+        isSystem: false,
+        labelIdentifierFieldMetadataName: 'name',
       },
       workspaceId,
       standardObjectMetadataRelatedEntityIds,

@@ -698,6 +698,9 @@ export const STANDARD_OBJECTS = {
       noteTargets: {
         universalIdentifier: '20202020-bae0-4556-a74a-a9c686f77a88',
       },
+      dialogTargets: {
+        universalIdentifier: 'a662f975-45f2-4046-a26c-b2eddb42b762',
+      },
       opportunities: {
         universalIdentifier: '20202020-add3-4658-8e23-d70dccb6d0ec',
       },
@@ -1927,6 +1930,9 @@ export const STANDARD_OBJECTS = {
       noteTargets: {
         universalIdentifier: '20202020-dd3f-42d5-a382-db58aabf43d3',
       },
+      dialogTargets: {
+        universalIdentifier: 'd9133c0f-8eb1-4d08-8186-a8a795b6e655',
+      },
       attachments: {
         universalIdentifier: '20202020-87c7-4118-83d6-2f4031005209',
       },
@@ -2165,7 +2171,7 @@ export const STANDARD_OBJECTS = {
       },
       name: { universalIdentifier: 'f341154a-4bda-49e5-ae49-9ca72da9644d' },
       artikul: {
-        universalIdentifier: '7c91a2b3-c4d5-6e7f-8901-2345abcdef67',
+        universalIdentifier: 'a4a3681f-4c25-4ab1-a678-be4ccd0455c2',
       },
       currentPrice: {
         universalIdentifier: 'e490357a-5d52-4f6c-bacd-9b01443fbc92',
@@ -2283,6 +2289,9 @@ export const STANDARD_OBJECTS = {
       },
       noteTargets: {
         universalIdentifier: '20202020-c8fc-4258-8250-15905d3fcfec',
+      },
+      dialogTargets: {
+        universalIdentifier: '9fed57fe-8ad3-49c0-bc9c-642eee69ae0a',
       },
       attachments: {
         universalIdentifier: '20202020-cd97-451f-87fa-bcb789bdbf3a',
@@ -2754,6 +2763,9 @@ export const STANDARD_OBJECTS = {
       targetDashboard: {
         universalIdentifier: '20202020-7864-48f5-af7c-9e4b60140948',
       },
+      targetDialog: {
+        universalIdentifier: '63037f6a-3df3-4dfb-83f5-766e0cfd83f4',
+      },
       linkedRecordCachedName: {
         universalIdentifier: '20202020-cfdb-4bef-bbce-a29f41230934',
       },
@@ -2810,6 +2822,9 @@ export const STANDARD_OBJECTS = {
       dashboardIdIndex: {
         universalIdentifier: 'e8821da9-728d-470a-bf5b-5a981fff7880',
       },
+      dialogIdIndex: {
+        universalIdentifier: '28731e61-c3e3-4655-aa28-1a947494bb33',
+      },
     },
     views: {
       allTimelineActivities: {
@@ -2856,6 +2871,9 @@ export const STANDARD_OBJECTS = {
           },
           targetDashboard: {
             universalIdentifier: '538847e8-ab09-407c-a433-505f6d7be7a1',
+          },
+          targetDialog: {
+            universalIdentifier: '1d40d0f4-7f8a-4206-9431-aa23ec716069',
           },
         },
       },
@@ -3342,6 +3360,9 @@ export const STANDARD_OBJECTS = {
       updatedBy: {
         universalIdentifier: '29f84ad0-509f-4aef-9f9c-2691dd60cd87',
       },
+      accountOwnerForWazzupAccounts: {
+        universalIdentifier: '48c48372-ce8b-44d6-b941-0d7b4b29092e',
+      },
     },
     indexes: {
       userEmailUniqueIndex: {
@@ -3387,6 +3408,439 @@ export const STANDARD_OBJECTS = {
           },
           assignedTasks: {
             universalIdentifier: 'af16226e-6375-4676-8bd9-9d1a57076fc4',
+          },
+        },
+      },
+    },
+  },
+  wazzupAccount: {
+    universalIdentifier: 'df732004-0b78-4f49-9679-141efc354d1d',
+    fields: {
+      id: { universalIdentifier: 'cb0fcaf9-b070-4512-be84-5a493dc6fef4' },
+      createdAt: {
+        universalIdentifier: 'ba860782-9f59-443d-a896-f8b979a406f5',
+      },
+      updatedAt: {
+        universalIdentifier: 'd5cd712d-d0df-4d16-9441-c7f7853776ee',
+      },
+      deletedAt: {
+        universalIdentifier: '2bc9f8c6-ecbe-40ab-afe5-51a4c516ebab',
+      },
+      createdBy: {
+        universalIdentifier: '9e69fbfb-ac89-4222-bc73-91d3a31cf919',
+      },
+      updatedBy: {
+        universalIdentifier: 'fa88a4e3-5c71-4007-bed3-5b322ae08f50',
+      },
+      position: {
+        universalIdentifier: '7106ea8a-4fa6-42e5-8097-605711ef24ec',
+      },
+      searchVector: {
+        universalIdentifier: 'a1f6167f-7b58-4984-b1bd-377020cf19d8',
+      },
+      name: { universalIdentifier: '36123c55-d7a8-472f-994a-6afd721c6406' },
+      apiKey: { universalIdentifier: '1f23d3fd-ec81-4b52-b6b8-a38906b5fe58' },
+      webhookUrl: {
+        universalIdentifier: 'c6a61eb7-313c-4d5e-a8c7-d5db4f854a55',
+      },
+      isActive: {
+        universalIdentifier: 'fb534aac-e938-48f8-97ee-ef6feaa58c21',
+      },
+      lastSyncAt: {
+        universalIdentifier: 'b69cf934-8f40-4a2c-a568-c684848ad934',
+      },
+      accountOwner: {
+        universalIdentifier: 'c5efbccc-a731-43a9-9cad-c2b323bdd4f4',
+      },
+      wazzupChannels: {
+        universalIdentifier: 'e04ff972-c385-4baf-acae-f3b4f9f290dc',
+      },
+    },
+    indexes: {
+      accountOwnerIndex: {
+        universalIdentifier: '6a444049-e334-43b3-90d1-57c64bc5e8aa',
+      },
+    },
+    views: {
+      allWazzupAccounts: {
+        universalIdentifier: '2ae15cbf-eed1-42a6-9119-3da1e1ae43fa',
+        viewFields: {
+          name: {
+            universalIdentifier: '5017c852-bc3a-4940-8a81-1ee5ea5c7c76',
+          },
+          apiKey: {
+            universalIdentifier: '1dbf4aa1-39da-4218-b0c6-bbb0846bb692',
+          },
+          isActive: {
+            universalIdentifier: '97396aad-0221-4034-ae07-4c56ee15a83a',
+          },
+          lastSyncAt: {
+            universalIdentifier: 'ae2d8cab-016a-4ea4-9035-9cbd708a3561',
+          },
+        },
+      },
+    },
+  },
+  wazzupChannel: {
+    universalIdentifier: '6dab9c54-43ac-45d1-8d96-7a0f3c083c25',
+    fields: {
+      id: { universalIdentifier: 'a93476eb-381a-42fe-9874-38b2b3fad5b6' },
+      createdAt: {
+        universalIdentifier: '50bd5242-0614-4e7b-8eb0-f9920888e04b',
+      },
+      updatedAt: {
+        universalIdentifier: '3d5709ed-3964-4fbe-a73f-ef5d4d4f8507',
+      },
+      deletedAt: {
+        universalIdentifier: '829db5e9-8470-437f-ac6d-d5bdd0e7d68c',
+      },
+      createdBy: {
+        universalIdentifier: 'b9ca1f6b-440b-465a-baf0-9bcd7c3614e7',
+      },
+      updatedBy: {
+        universalIdentifier: '8083e7db-99aa-429f-bc17-723c9862eae4',
+      },
+      position: {
+        universalIdentifier: '0a93c968-a753-4707-98a2-502863e44220',
+      },
+      searchVector: {
+        universalIdentifier: '0dcf1ff0-a3e9-402b-96b0-a0a3ff36819d',
+      },
+      name: { universalIdentifier: '040cb604-61f7-4439-aae2-9ddbe4fc9e55' },
+      externalChannelId: {
+        universalIdentifier: 'b57a774f-84f7-42cd-87bf-825df854aa8b',
+      },
+      transport: {
+        universalIdentifier: 'da789e90-c715-4c3e-bc62-b09f1a834551',
+      },
+      state: {
+        universalIdentifier: '5100a1e8-ca27-4014-a779-87a12ecbda22',
+      },
+      plainId: {
+        universalIdentifier: '5575f42e-98bc-400d-9b67-b465e0c6e059',
+      },
+      wazzupAccount: {
+        universalIdentifier: '9286931e-a94a-4aba-b67b-29a7fd871597',
+      },
+      dialogs: {
+        universalIdentifier: 'dd948df3-d528-4475-8dc9-e48535e4b3c7',
+      },
+    },
+    indexes: {
+      externalChannelIdIndex: {
+        universalIdentifier: 'c8d6465f-27be-4f70-a9bc-762fe8447c29',
+      },
+      wazzupAccountIndex: {
+        universalIdentifier: '34366966-1743-4fa6-a263-319b64c552a8',
+      },
+    },
+    views: {
+      allWazzupChannels: {
+        universalIdentifier: 'ed47c500-4ac2-4bde-97c8-6b253aa7e3fd',
+        viewFields: {
+          name: {
+            universalIdentifier: 'ebf66f40-c644-4747-885b-74e13f26dae5',
+          },
+          transport: {
+            universalIdentifier: '4c53e9f4-0385-4b04-924a-5497fa3b7325',
+          },
+          state: {
+            universalIdentifier: '119f1366-a308-4ffe-ba2f-65fd3db980e0',
+          },
+          plainId: {
+            universalIdentifier: '2b398868-3259-4d0f-a894-bddd0a8a48c1',
+          },
+        },
+      },
+    },
+  },
+  dialog: {
+    universalIdentifier: '5635846c-1ee0-4ae3-8a3b-c5ff4b926bfa',
+    fields: {
+      id: { universalIdentifier: '817dc4b5-5d0a-4ea6-ada7-a7b1603077ca' },
+      createdAt: {
+        universalIdentifier: '4ac00f30-668e-4b45-a4b5-ca0695ebc476',
+      },
+      updatedAt: {
+        universalIdentifier: 'e2157292-38be-47f3-83c8-72a6d5f38d27',
+      },
+      deletedAt: {
+        universalIdentifier: '64868145-a886-4e57-86f5-a7a3a80d9321',
+      },
+      createdBy: {
+        universalIdentifier: '4cfd7955-0542-4c5e-97da-daac20e5cd61',
+      },
+      updatedBy: {
+        universalIdentifier: '6ab0a522-3d3d-4138-b8a6-d1a22bb63c98',
+      },
+      position: {
+        universalIdentifier: '153ef610-5b72-49e2-ae94-8503cfe36f0b',
+      },
+      searchVector: {
+        universalIdentifier: '2abdb5c4-db99-4580-b729-cfd7b0971197',
+      },
+      name: { universalIdentifier: 'ccee01ea-1ef6-4fc8-b77f-52f784d2c2fe' },
+      status: {
+        universalIdentifier: 'cc747afc-5cf8-4a10-baa0-4ff7bdde6c57',
+      },
+      chatType: {
+        universalIdentifier: 'c1ded0ae-edf4-42db-879c-4420019c222c',
+      },
+      chatId: {
+        universalIdentifier: '0ff00646-1245-41ad-af16-1e05e570169a',
+      },
+      contactName: {
+        universalIdentifier: '534bb1fc-20a3-4a90-bc51-02bff19c49ec',
+      },
+      contactPhone: {
+        universalIdentifier: '0098fe84-dd0e-4d75-885c-f8c17cd748a3',
+      },
+      lastMessageAt: {
+        universalIdentifier: 'a554e726-5058-468a-a613-21f9b9b69d02',
+      },
+      lastMessagePreview: {
+        universalIdentifier: '060c191a-687e-4e1d-9181-00f9e6a72d93',
+      },
+      wazzupChannel: {
+        universalIdentifier: '07571d51-0641-4f68-80d7-e6acb6ea41c9',
+      },
+      dialogMessages: {
+        universalIdentifier: '87dc3bea-2383-40e1-bb1d-8a1ed209c842',
+      },
+      dialogTargets: {
+        universalIdentifier: '3548b3df-396b-417e-abd1-41a806bcfe7e',
+      },
+      timelineActivities: {
+        universalIdentifier: 'fd03702e-dbd8-4004-a005-2c37c4da285b',
+      },
+    },
+    indexes: {
+      chatIdIndex: {
+        universalIdentifier: '10f008a6-739d-4600-a860-9663228fb239',
+      },
+      wazzupChannelIndex: {
+        universalIdentifier: '0db275e4-313c-4f07-bfcc-f5d1460c45c1',
+      },
+      lastMessageAtIndex: {
+        universalIdentifier: '59aa6548-3e7e-4482-b411-1dfc4d1f1d4e',
+      },
+    },
+    views: {
+      allDialogs: {
+        universalIdentifier: 'b3710d30-9bf7-435c-83a8-db3741a86df9',
+        viewFields: {
+          name: {
+            universalIdentifier: '072b64df-9bb6-48f0-8796-b7103d345a1b',
+          },
+          status: {
+            universalIdentifier: 'c3822fe1-0932-472e-8eee-147fbb25a25c',
+          },
+          chatType: {
+            universalIdentifier: '84f806ec-5a8f-4c21-b698-e148175b74bf',
+          },
+          contactName: {
+            universalIdentifier: '8aff13fb-a32c-415c-b38c-fc0bc84348e9',
+          },
+          lastMessageAt: {
+            universalIdentifier: '6def8093-b13d-4241-8feb-07e86831dc2d',
+          },
+          lastMessagePreview: {
+            universalIdentifier: '677a1eb2-f708-4c73-b539-fd6fcad16071',
+          },
+        },
+      },
+      byStatus: {
+        universalIdentifier: '7bca7071-a62b-4bad-8d9e-a11ce1c6d680',
+        viewFields: {
+          name: {
+            universalIdentifier: 'e440a169-206a-4dff-827c-419c08bb022d',
+          },
+          status: {
+            universalIdentifier: '5e041d11-63a3-4fed-801a-bc711a28a918',
+          },
+          chatType: {
+            universalIdentifier: '8eb054af-42ce-4228-b59a-5ff9a933cf0c',
+          },
+          contactName: {
+            universalIdentifier: '76cd4f61-bbbc-451e-acf9-2852fc99aaad',
+          },
+          lastMessageAt: {
+            universalIdentifier: 'af2963b0-eba5-495d-89a4-cf2b3e4de996',
+          },
+          lastMessagePreview: {
+            universalIdentifier: '8731f56e-a2fc-49ec-9abc-4e800583098b',
+          },
+        },
+        viewGroups: {
+          open: {
+            universalIdentifier: 'cf75cca8-2fb4-43d9-acb8-0e5c4b193fb0',
+          },
+          closed: {
+            universalIdentifier: 'f85b8180-ee6e-4121-8999-06ffc614672f',
+          },
+        },
+      },
+    },
+  },
+  dialogMessage: {
+    universalIdentifier: 'ee647adf-4316-4e9e-9193-24708de1c9ce',
+    fields: {
+      id: { universalIdentifier: 'd16788e0-6842-4713-b666-833233707c67' },
+      createdAt: {
+        universalIdentifier: '7016a38f-f340-4540-908e-40463f37fa4a',
+      },
+      updatedAt: {
+        universalIdentifier: '1357cc60-5c7f-40a4-b1d5-6ce6bb6b0aa7',
+      },
+      deletedAt: {
+        universalIdentifier: '3fa195a7-7705-4864-af37-81d311a8d645',
+      },
+      createdBy: {
+        universalIdentifier: '27df7fbc-3c34-4b53-bf65-a9e2b839dd0a',
+      },
+      updatedBy: {
+        universalIdentifier: 'd4f0265a-25d8-4401-be45-d30a42273f17',
+      },
+      position: {
+        universalIdentifier: '1bbc095c-a929-47da-b181-b6290f4c7740',
+      },
+      searchVector: {
+        universalIdentifier: '412d848f-58a2-4618-a075-cd4d41cd262d',
+      },
+      name: { universalIdentifier: '51543a40-2159-4354-adf5-2059ebae5de2' },
+      externalMessageId: {
+        universalIdentifier: '54ea008d-6bc7-432b-b0d8-40ee9c1f14cc',
+      },
+      direction: {
+        universalIdentifier: '102f6b03-5e68-455c-927c-10622d5c7a89',
+      },
+      messageType: {
+        universalIdentifier: 'ef6bedf9-62a5-4271-96f4-cf87e52de079',
+      },
+      text: { universalIdentifier: 'a9591516-04b7-43b8-be4f-b5977e8bf6be' },
+      contentUri: {
+        universalIdentifier: '2c89f49e-35c7-417b-980b-433764beb942',
+      },
+      status: {
+        universalIdentifier: '1228538d-8544-4f06-898e-69bde853bf84',
+      },
+      sentAt: {
+        universalIdentifier: 'a67c8412-1deb-4504-bfde-b34942e52102',
+      },
+      dialog: {
+        universalIdentifier: 'a739be86-1da0-4192-a16f-c32bebbe9eef',
+      },
+    },
+    indexes: {
+      externalMessageIdIndex: {
+        universalIdentifier: '810021d0-0ce4-46ed-9811-322e385a9092',
+      },
+      dialogIndex: {
+        universalIdentifier: '4aaa5b92-1f08-4e5a-af19-456b121bcbf7',
+      },
+      sentAtIndex: {
+        universalIdentifier: '73dff064-f774-49bf-b8db-beac5340756e',
+      },
+    },
+    views: {
+      allDialogMessages: {
+        universalIdentifier: '7ac08c70-c1f7-4e5c-a7db-090cba6ae6cc',
+        viewFields: {
+          name: {
+            universalIdentifier: 'ee96e17f-9b2e-44a5-a988-50db033e34d7',
+          },
+          direction: {
+            universalIdentifier: '9933828f-bd1e-4545-953b-37771cd2681f',
+          },
+          messageType: {
+            universalIdentifier: 'af713489-33b5-45c2-bb7d-1bcb29e1609e',
+          },
+          text: {
+            universalIdentifier: 'bf342bf1-7f79-4f3c-853f-9c4104a7d74c',
+          },
+          sentAt: {
+            universalIdentifier: '6d68a539-6dd0-47bf-ae88-6e6d70c891fc',
+          },
+          status: {
+            universalIdentifier: 'e2bcab0f-a312-4cca-aec1-4a965116b6a1',
+          },
+        },
+      },
+    },
+  },
+  dialogTarget: {
+    universalIdentifier: '342ff342-ecbf-43bc-8b82-56d0468de103',
+    fields: {
+      id: { universalIdentifier: '0e505a4f-2f76-43fa-b71e-20ae7cc05456' },
+      createdAt: {
+        universalIdentifier: 'e352239e-5764-4829-9df9-df09de7b5a76',
+      },
+      updatedAt: {
+        universalIdentifier: '31113829-a01a-45d1-bf0b-a224754f27ff',
+      },
+      deletedAt: {
+        universalIdentifier: '0b6982f5-1dcf-4693-b555-491d98c1f100',
+      },
+      createdBy: {
+        universalIdentifier: '5c0cb862-8326-4596-9863-ae2d90f31859',
+      },
+      updatedBy: {
+        universalIdentifier: '28c1b824-82bf-44a9-a569-9297d43cf9d1',
+      },
+      position: {
+        universalIdentifier: 'b4605c68-94bb-4cc8-93b4-20c8ae27ad2d',
+      },
+      searchVector: {
+        universalIdentifier: '3b602738-cc99-4754-bfd7-66cd145cd7ac',
+      },
+      dialog: {
+        universalIdentifier: '9bef32cd-1ac6-4774-9438-5949ef94fccc',
+      },
+      targetPerson: {
+        universalIdentifier: '8feaa9c5-7610-480f-b501-33c23ce65aea',
+      },
+      targetCompany: {
+        universalIdentifier: 'e5d2f200-70a8-4263-b3b6-2f09253631f8',
+      },
+      targetOpportunity: {
+        universalIdentifier: 'cddf301d-f179-41fb-926a-4ee9412d52f4',
+      },
+    },
+    morphIds: {
+      targetMorphId: { morphId: 'aca9004e-6008-4cf0-bee1-db398c47ef33' },
+    },
+    indexes: {
+      dialogIndex: {
+        universalIdentifier: '7b69e6f2-74e3-4364-ab4a-87677c62bd12',
+      },
+      personIdIndex: {
+        universalIdentifier: '15599f13-5b21-45f7-b3b1-dc4e2a7ea14b',
+      },
+      companyIdIndex: {
+        universalIdentifier: 'a72b78ba-586c-432c-8202-6325c187397a',
+      },
+      opportunityIdIndex: {
+        universalIdentifier: '5b29f7ee-e669-40e1-9a7b-c49490c5fb43',
+      },
+    },
+    views: {
+      allDialogTargets: {
+        universalIdentifier: '8895e530-4c4a-49e0-ae0e-ec838296d739',
+        viewFields: {
+          id: {
+            universalIdentifier: '4ce5c152-1d31-486a-a954-77c8b01eb415',
+          },
+          dialog: {
+            universalIdentifier: 'e90aecad-b3ae-4279-9dbe-e524828f917b',
+          },
+          targetPerson: {
+            universalIdentifier: 'b93dd6c7-048c-43a0-bb7e-b03703b25dc7',
+          },
+          targetCompany: {
+            universalIdentifier: 'bc81f164-47f5-4b75-8ae1-eeb9aa093400',
+          },
+          targetOpportunity: {
+            universalIdentifier: '7c89b432-d8c9-462a-832a-84a7510a5e03',
           },
         },
       },

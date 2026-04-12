@@ -136,4 +136,16 @@ export const buildTimelineActivityStandardFlatIndexMetadatas = ({
     twentyStandardApplicationId,
     now,
   }),
+  dialogIdIndex: createStandardIndexFlatMetadata({
+    objectName,
+    workspaceId,
+    context: {
+      indexName: 'dialogIdIndex',
+      relatedFieldNames: ['targetDialog'],
+    },
+    standardObjectMetadataRelatedEntityIds,
+    dependencyFlatEntityMaps,
+    twentyStandardApplicationId,
+    now,
+  }),
 });

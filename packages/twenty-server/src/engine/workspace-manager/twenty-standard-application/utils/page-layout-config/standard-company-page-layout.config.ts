@@ -82,6 +82,16 @@ const COMPANY_PAGE_TABS = {
       },
     },
   },
+  dialogs: {
+    universalIdentifier: '20202020-ab01-4001-8001-c0aba11c0108',
+    ...TAB_PROPS.dialogs,
+    widgets: {
+      dialogs: {
+        universalIdentifier: '20202020-ac01-4001-8001-c0aba11c0181',
+        ...WIDGET_PROPS.dialogs,
+      },
+    },
+  },
   emails: {
     universalIdentifier: '20202020-ab01-4001-8001-c0aba11c0106',
     ...TAB_PROPS.emails,

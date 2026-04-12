@@ -31,4 +31,9 @@ export enum CoreObjectNameSingular {
   MessageChannelMessageAssociation = 'messageChannelMessageAssociation',
   WorkflowVersion = 'workflowVersion',
   WorkflowRun = 'workflowRun',
+  WazzupAccount = 'wazzupAccount',
+  WazzupChannel = 'wazzupChannel',
+  Dialog = 'dialog',
+  DialogMessage = 'dialogMessage',
+  DialogTarget = 'dialogTarget',
 }

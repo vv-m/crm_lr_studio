@@ -6,6 +6,7 @@ import { type FieldTypeAndNameMetadata } from 'src/engine/workspace-manager/util
 import { type EntityRelation } from 'src/engine/workspace-manager/workspace-migration/types/entity-relation.interface';
 import { type CompanyWorkspaceEntity } from 'src/modules/company/standard-objects/company.workspace-entity';
 import { type DashboardWorkspaceEntity } from 'src/modules/dashboard/standard-objects/dashboard.workspace-entity';
+import { type DialogWorkspaceEntity } from 'src/modules/dialog/standard-objects/dialog.workspace-entity';
 import { type NoteWorkspaceEntity } from 'src/modules/note/standard-objects/note.workspace-entity';
 import { type OpportunityWorkspaceEntity } from 'src/modules/opportunity/standard-objects/opportunity.workspace-entity';
 import { type PersonWorkspaceEntity } from 'src/modules/person/standard-objects/person.workspace-entity';
@@ -48,6 +49,8 @@ export class TimelineActivityWorkspaceEntity extends BaseWorkspaceEntity {
   targetWorkflowRunId: string | null;
   targetDashboard: EntityRelation<DashboardWorkspaceEntity> | null;
   targetDashboardId: string | null;
+  targetDialog: EntityRelation<DialogWorkspaceEntity> | null;
+  targetDialogId: string | null;
   custom: EntityRelation<CustomWorkspaceEntity>;
   targetCustom: EntityRelation<CustomWorkspaceEntity>;
 }

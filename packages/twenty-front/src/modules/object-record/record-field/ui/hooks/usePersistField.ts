@@ -202,6 +202,10 @@ export const usePersistField = ({
             },
           });
 
+          // Upsert both the foreign key and the nested relation value so that
+          // downstream reads (e.g. RecordChip avatar) immediately see the
+          // freshly linked record — including its image identifier field —
+          // without waiting for a page refresh.
           upsertRecordsInStore({
             partialRecords: [
               getRecordFromRecordNode({
@@ -210,6 +214,7 @@ export const usePersistField = ({
             ],
             recordGqlFields: {
               [getForeignKeyNameFromRelationFieldName(fieldName)]: true,
+              [fieldName]: true,
             },
           });
           return;

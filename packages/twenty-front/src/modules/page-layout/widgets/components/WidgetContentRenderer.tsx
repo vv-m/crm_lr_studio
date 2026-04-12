@@ -1,4 +1,9 @@
 import {
+  DIALOG_RECORD_TAB_ID,
+  DIALOG_RECORD_TAB_WIDGET_ID,
+} from '@/dialog/constants/dialog-widget-id.constant';
+import { DialogWidget } from '@/dialog/components/DialogWidget';
+import {
   LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_ID,
   LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_WIDGET_ID,
 } from '@/lr-opportunity-products/constants/lr-opportunity-products-widget-id.constant';
@@ -34,11 +39,19 @@ const isLrOpportunityProductsRecordTabWidget = (
   widget.id === LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_WIDGET_ID ||
   widget.pageLayoutTabId === LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_ID;
 
+const isDialogRecordTabWidget = (widget: PageLayoutWidget): boolean =>
+  widget.id === DIALOG_RECORD_TAB_WIDGET_ID ||
+  widget.pageLayoutTabId === DIALOG_RECORD_TAB_ID;
+
 export const WidgetContentRenderer = ({
   widget,
 }: WidgetContentRendererProps) => {
   if (isLrOpportunityProductsRecordTabWidget(widget)) {
     return <OpportunityProductsRecordTab />;
+  }
+
+  if (isDialogRecordTabWidget(widget)) {
+    return <DialogWidget widget={widget} />;
   }
 
   switch (widget.type) {

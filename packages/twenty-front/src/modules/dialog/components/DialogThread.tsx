@@ -7,6 +7,7 @@ import { DialogMessageBubble } from '@/dialog/components/DialogMessageBubble';
 import { DialogMessageInput } from '@/dialog/components/DialogMessageInput';
 import { useDialogMessages } from '@/dialog/hooks/useDialogMessages';
 import { useSendDialogMessage } from '@/dialog/hooks/useSendDialogMessage';
+import { useUploadDialogFile } from '@/dialog/hooks/useUploadDialogFile';
 
 const StyledThreadContainer = styled.div`
   display: flex;
@@ -51,6 +52,7 @@ export const DialogThread = ({ dialogId }: DialogThreadProps) => {
 
   const { messages, loading, refetch } = useDialogMessages({ dialogId });
   const { sendMessage, loading: sending } = useSendDialogMessage();
+  const { uploadFile } = useUploadDialogFile();
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
@@ -58,11 +60,39 @@ export const DialogThread = ({ dialogId }: DialogThreadProps) => {
   }, [messages.length]);
 
   const handleSend = useCallback(
-    async (text: string) => {
-      await sendMessage({ dialogId, text });
+    async (text: string, files?: File[]) => {
+      // Send files first (each as a separate message with contentUri)
+      if (files && files.length > 0) {
+        for (const file of files) {
+          const uploaded = await uploadFile(file);
+
+          if (uploaded) {
+            await sendMessage({
+              dialogId,
+              text: text || undefined,
+              contentUri: uploaded.url,
+            });
+            // Only attach text to the first file message
+            text = '';
+          }
+        }
+
+        // If text was consumed by a file message, we are done
+        if (!text) {
+          refetch();
+
+          return;
+        }
+      }
+
+      // Send text-only message
+      if (text) {
+        await sendMessage({ dialogId, text });
+      }
+
       refetch();
     },
-    [dialogId, sendMessage, refetch],
+    [dialogId, sendMessage, uploadFile, refetch],
   );
 
   if (loading && messages.length === 0) {

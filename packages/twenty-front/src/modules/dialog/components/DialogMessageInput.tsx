@@ -118,7 +118,7 @@ const StyledPreviewFile = styled.div`
 
 const StyledRemoveButton = styled.button`
   align-items: center;
-  background-color: ${themeCssVariables.background.transparent.dark};
+  background-color: ${themeCssVariables.background.overlaySecondary};
   border: none;
   border-radius: 50%;
   color: ${themeCssVariables.font.color.inverted};

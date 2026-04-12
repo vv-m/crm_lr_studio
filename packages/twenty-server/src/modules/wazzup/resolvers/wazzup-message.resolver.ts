@@ -1,4 +1,4 @@
-import { UseFilters, UseGuards } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Args, Field, Mutation, ObjectType } from '@nestjs/graphql';
 
 import { CoreResolver } from 'src/engine/api/graphql/graphql-config/decorators/core-resolver.decorator';
@@ -45,6 +45,8 @@ class SendDialogMessageResult {
 @CoreResolver()
 @UseGuards(WorkspaceAuthGuard, UserAuthGuard)
 export class WazzupMessageResolver {
+  private readonly logger = new Logger(WazzupMessageResolver.name);
+
   constructor(
     private readonly globalWorkspaceOrmManager: GlobalWorkspaceOrmManager,
     private readonly wazzupApiService: WazzupApiService,
@@ -57,6 +59,8 @@ export class WazzupMessageResolver {
     @Args('text', { type: () => String, nullable: true }) text?: string,
     @Args('contentUri', { type: () => String, nullable: true })
     contentUri?: string,
+    @Args('messageType', { type: () => String, nullable: true })
+    messageType?: string,
   ): Promise<SendDialogMessageResult> {
     const authContext = buildSystemAuthContext(workspace.id);
 
@@ -115,17 +119,11 @@ export class WazzupMessageResolver {
           );
         }
 
-        // Send message via Wazzup API
-        const sendResult = await this.wazzupApiService.sendMessage(
-          wazzupAccount.apiKey,
-          wazzupChannel.externalChannelId,
-          dialog.chatType,
-          dialog.chatId,
-          text,
-          contentUri,
-        );
+        // Wazzup API constraint: text and contentUri CANNOT be sent
+        // simultaneously. When both are provided we send two separate
+        // API calls: file first, then text.
+        // contentUri must be a publicly accessible URL (no localhost).
 
-        // Create dialog message record
         const dialogMessageRepository =
           await this.globalWorkspaceOrmManager.getRepository<DialogMessageWorkspaceEntity>(
             workspace.id,
@@ -136,32 +134,90 @@ export class WazzupMessageResolver {
         const now = new Date();
         const messagePreview = text?.substring(0, 255) ?? null;
 
-        const savedMessage = await dialogMessageRepository.save({
-          externalMessageId: sendResult.messageId,
-          direction: 'OUTBOUND',
-          messageType: contentUri ? 'file' : 'text',
-          text: text ?? null,
-          contentUri: contentUri ?? null,
-          status: 'sent',
-          sentAt: now,
-          name: messagePreview ?? 'OUTBOUND',
-          dialogId: dialog.id,
-        });
+        let savedFileMessage: DialogMessageWorkspaceEntity | null = null;
+        let fileMessageStatus = 'sent';
+
+        // 1. Send file message (if contentUri provided)
+        if (contentUri) {
+          let fileExternalId: string | null = null;
+
+          try {
+            const result = await this.wazzupApiService.sendMessage(
+              wazzupAccount.apiKey,
+              wazzupChannel.externalChannelId,
+              dialog.chatType,
+              dialog.chatId,
+              undefined,
+              contentUri,
+            );
+
+            fileExternalId = result.messageId;
+          } catch (error) {
+            this.logger.warn(
+              `Failed to send file via Wazzup: ${error}`,
+            );
+            fileMessageStatus = 'failed';
+          }
+
+          savedFileMessage = (await dialogMessageRepository.save({
+            externalMessageId: fileExternalId,
+            direction: 'OUTBOUND',
+            messageType: messageType ?? 'file',
+            text: null,
+            contentUri,
+            status: fileMessageStatus,
+            sentAt: now,
+            name: 'OUTBOUND',
+            dialogId: dialog.id,
+          })) as DialogMessageWorkspaceEntity;
+        }
+
+        // 2. Send text message (if text provided)
+        let savedTextMessage: DialogMessageWorkspaceEntity | null = null;
+
+        if (text) {
+          const textResult = await this.wazzupApiService.sendMessage(
+            wazzupAccount.apiKey,
+            wazzupChannel.externalChannelId,
+            dialog.chatType,
+            dialog.chatId,
+            text,
+          );
+
+          savedTextMessage = (await dialogMessageRepository.save({
+            externalMessageId: textResult.messageId || null,
+            direction: 'OUTBOUND',
+            messageType: 'text',
+            text,
+            contentUri: null,
+            status: 'sent',
+            sentAt: now,
+            name: messagePreview ?? 'OUTBOUND',
+            dialogId: dialog.id,
+          })) as DialogMessageWorkspaceEntity;
+        }
 
         // Update dialog with latest message info
         await dialogRepository.update(dialog.id, {
           lastMessageAt: now,
-          lastMessagePreview: messagePreview,
+          lastMessagePreview: messagePreview ?? (contentUri ? 'File' : null),
         });
 
+        // Return the last saved message
+        const lastSaved = savedTextMessage ?? savedFileMessage;
+
+        if (!lastSaved) {
+          throw new Error('No message was sent');
+        }
+
         return {
-          id: (savedMessage as DialogMessageWorkspaceEntity).id,
-          externalMessageId: sendResult.messageId,
+          id: lastSaved.id,
+          externalMessageId: lastSaved.externalMessageId ?? null,
           direction: 'OUTBOUND',
-          messageType: contentUri ? 'file' : 'text',
-          text: text ?? null,
-          contentUri: contentUri ?? null,
-          status: 'sent',
+          messageType: lastSaved.messageType ?? 'text',
+          text: lastSaved.text ?? null,
+          contentUri: lastSaved.contentUri ?? null,
+          status: lastSaved.status ?? 'sent',
           sentAt: now,
         };
       },

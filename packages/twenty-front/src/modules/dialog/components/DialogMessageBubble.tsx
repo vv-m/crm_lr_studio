@@ -3,6 +3,7 @@ import { themeCssVariables } from 'twenty-ui/theme-constants';
 import { IconCheck, IconFile } from 'twenty-ui/display';
 
 import { type DialogMessageRecord } from '@/dialog/hooks/useDialogMessages';
+import { REACT_APP_SERVER_BASE_URL } from '~/config';
 
 const StyledBubbleRow = styled.div<{ isOutbound: boolean }>`
   display: flex;
@@ -39,6 +40,12 @@ const StyledImage = styled.img`
   cursor: pointer;
 `;
 
+const StyledVideo = styled.video`
+  max-width: 240px;
+  max-height: 180px;
+  border-radius: ${themeCssVariables.border.radius.sm};
+`;
+
 const StyledFileLink = styled.a`
   display: inline-flex;
   align-items: center;
@@ -69,7 +76,31 @@ const StyledMeta = styled.div<{ isOutbound: boolean }>`
       : themeCssVariables.font.color.tertiary};
 `;
 
-const isImageUri = (uri: string): boolean => {
+// Convert absolute server URLs to local base URL for direct access.
+// Files uploaded via our server get a SERVER_URL-based URL (e.g. ngrok)
+// which may be inaccessible from the browser. We replace the origin
+// with the local REACT_APP_SERVER_BASE_URL to load them directly.
+const toDisplayUri = (uri: string): string => {
+  try {
+    const parsed = new URL(uri);
+    const localBase = REACT_APP_SERVER_BASE_URL ?? '';
+
+    // Only rewrite if the path looks like our own file endpoint
+    if (parsed.pathname.startsWith('/file/') && localBase) {
+      return `${localBase}${parsed.pathname}${parsed.search}`;
+    }
+  } catch {
+    // Not a valid URL — return as is
+  }
+
+  return uri;
+};
+
+const isImageContent = (uri: string, messageType?: string): boolean => {
+  if (messageType === 'image') {
+    return true;
+  }
+
   const lower = uri.toLowerCase();
 
   return (
@@ -79,6 +110,21 @@ const isImageUri = (uri: string): boolean => {
     lower.endsWith('.gif') ||
     lower.endsWith('.webp') ||
     lower.includes('image')
+  );
+};
+
+const isVideoContent = (uri: string, messageType?: string): boolean => {
+  if (messageType === 'video') {
+    return true;
+  }
+
+  const lower = uri.toLowerCase();
+
+  return (
+    lower.endsWith('.mp4') ||
+    lower.endsWith('.mov') ||
+    lower.endsWith('.webm') ||
+    lower.endsWith('.avi')
   );
 };
 
@@ -115,15 +161,24 @@ export const DialogMessageBubble = ({ message }: DialogMessageBubbleProps) => {
       <StyledBubble isOutbound={isOutbound}>
         {message.contentUri && (
           <StyledMediaPreview>
-            {isImageUri(message.contentUri) ? (
+            {isImageContent(message.contentUri, message.messageType) ? (
               <StyledImage
-                src={message.contentUri}
+                src={toDisplayUri(message.contentUri)}
                 alt="Media"
-                onClick={() => window.open(message.contentUri ?? '', '_blank')}
+                onClick={() =>
+                  window.open(toDisplayUri(message.contentUri ?? ''), '_blank')
+                }
               />
+            ) : isVideoContent(
+                message.contentUri,
+                message.messageType,
+              ) ? (
+              <StyledVideo controls>
+                <source src={toDisplayUri(message.contentUri)} />
+              </StyledVideo>
             ) : (
               <StyledFileLink
-                href={message.contentUri}
+                href={toDisplayUri(message.contentUri)}
                 target="_blank"
                 rel="noopener noreferrer"
               >

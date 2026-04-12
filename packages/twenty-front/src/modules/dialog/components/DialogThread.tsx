@@ -61,31 +61,30 @@ export const DialogThread = ({ dialogId }: DialogThreadProps) => {
 
   const handleSend = useCallback(
     async (text: string, files?: File[]) => {
-      // Send files first (each as a separate message with contentUri)
+      // Wazzup API does not allow text and contentUri simultaneously,
+      // so we send each file as a separate file-only message, then
+      // send text as a separate text-only message.
       if (files && files.length > 0) {
         for (const file of files) {
           const uploaded = await uploadFile(file);
 
           if (uploaded) {
+            const mimeType = file.type.split('/')[0];
+            const wazzupType = mimeType === 'image'
+              ? 'image'
+              : mimeType === 'video'
+                ? 'video'
+                : 'file';
+
             await sendMessage({
               dialogId,
-              text: text || undefined,
               contentUri: uploaded.url,
+              messageType: wazzupType,
             });
-            // Only attach text to the first file message
-            text = '';
           }
-        }
-
-        // If text was consumed by a file message, we are done
-        if (!text) {
-          refetch();
-
-          return;
         }
       }
 
-      // Send text-only message
       if (text) {
         await sendMessage({ dialogId, text });
       }

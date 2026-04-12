@@ -9,11 +9,13 @@ const SEND_DIALOG_MESSAGE_MUTATION = gql`
     $dialogId: UUID!
     $text: String
     $contentUri: String
+    $messageType: String
   ) {
     sendDialogMessage(
       dialogId: $dialogId
       text: $text
       contentUri: $contentUri
+      messageType: $messageType
     ) {
       id
       externalMessageId
@@ -43,6 +45,7 @@ type UseSendDialogMessageReturn = {
     dialogId: string;
     text?: string;
     contentUri?: string;
+    messageType?: string;
   }) => Promise<SendDialogMessageResult | null>;
   loading: boolean;
 };
@@ -60,6 +63,7 @@ export const useSendDialogMessage = (): UseSendDialogMessageReturn => {
       dialogId: string;
       text?: string;
       contentUri?: string;
+      messageType?: string;
     }) => {
       setLoading(true);
 
@@ -69,6 +73,7 @@ export const useSendDialogMessage = (): UseSendDialogMessageReturn => {
             dialogId: params.dialogId,
             text: params.text,
             contentUri: params.contentUri,
+            messageType: params.messageType,
           },
         });
 

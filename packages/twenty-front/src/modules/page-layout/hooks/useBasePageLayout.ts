@@ -1,5 +1,7 @@
 import { DEFAULT_COMPANY_RECORD_PAGE_LAYOUT } from '@/page-layout/constants/DefaultCompanyRecordPageLayout';
 import { DEFAULT_COMPANY_RECORD_PAGE_LAYOUT_ID } from '@/page-layout/constants/DefaultCompanyRecordPageLayoutId';
+import { DEFAULT_DIALOG_RECORD_PAGE_LAYOUT } from '@/page-layout/constants/DefaultDialogRecordPageLayout';
+import { DEFAULT_DIALOG_RECORD_PAGE_LAYOUT_ID } from '@/page-layout/constants/DefaultDialogRecordPageLayoutId';
 import { DEFAULT_MESSAGE_THREAD_RECORD_PAGE_LAYOUT } from '@/page-layout/constants/DefaultMessageThreadRecordPageLayout';
 import { DEFAULT_MESSAGE_THREAD_RECORD_PAGE_LAYOUT_ID } from '@/page-layout/constants/DefaultMessageThreadRecordPageLayoutId';
 import { DEFAULT_NOTE_RECORD_PAGE_LAYOUT } from '@/page-layout/constants/DefaultNoteRecordPageLayout';
@@ -28,6 +30,8 @@ import { FindOnePageLayoutDocument } from '~/generated-metadata/graphql';
 
 const getDefaultLayoutById = (layoutId: string): PageLayout => {
   switch (layoutId) {
+    case DEFAULT_DIALOG_RECORD_PAGE_LAYOUT_ID:
+      return DEFAULT_DIALOG_RECORD_PAGE_LAYOUT;
     case DEFAULT_COMPANY_RECORD_PAGE_LAYOUT_ID:
       return DEFAULT_COMPANY_RECORD_PAGE_LAYOUT;
     case DEFAULT_PERSON_RECORD_PAGE_LAYOUT_ID:
@@ -54,6 +58,7 @@ const getDefaultLayoutById = (layoutId: string): PageLayout => {
 
 const isDefaultLayoutId = (layoutId: string): boolean =>
   layoutId === DEFAULT_RECORD_PAGE_LAYOUT_ID ||
+  layoutId === DEFAULT_DIALOG_RECORD_PAGE_LAYOUT_ID ||
   layoutId === DEFAULT_COMPANY_RECORD_PAGE_LAYOUT_ID ||
   layoutId === DEFAULT_PERSON_RECORD_PAGE_LAYOUT_ID ||
   layoutId === DEFAULT_OPPORTUNITY_RECORD_PAGE_LAYOUT_ID ||

@@ -55,6 +55,13 @@ const StyledLoadingContainer = styled.div`
   color: ${themeCssVariables.font.color.tertiary};
 `;
 
+const StyledDirectThreadContainer = styled.div`
+  height: 480px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+`;
+
 type DialogWidgetProps = {
   widget: PageLayoutWidget;
 };
@@ -66,10 +73,24 @@ export const DialogWidget = ({ widget: _widget }: DialogWidgetProps) => {
     string | undefined
   >();
 
+  const isDialogRecord =
+    targetRecord.targetObjectNameSingular === 'dialog';
+
   const { dialogs, loading } = useDialogsForRecord({
     objectNameSingular: targetRecord.targetObjectNameSingular,
     recordId: targetRecord.id,
   });
+
+  // When we are on a Dialog record page, render thread directly
+  if (isDialogRecord) {
+    return (
+      <StyledContainer>
+        <StyledDirectThreadContainer>
+          <DialogThread dialogId={targetRecord.id} />
+        </StyledDirectThreadContainer>
+      </StyledContainer>
+    );
+  }
 
   if (loading) {
     return (

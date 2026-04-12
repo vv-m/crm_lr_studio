@@ -1,8 +1,6 @@
 import { styled } from '@linaria/react';
 import { themeCssVariables } from 'twenty-ui/theme-constants';
 import { IconCheck, IconFile } from 'twenty-ui/display';
-import { LightCopyIconButton } from '@/object-record/record-field/ui/components/LightCopyIconButton';
-
 import { type DialogMessageRecord } from '@/dialog/hooks/useDialogMessages';
 import { REACT_APP_SERVER_BASE_URL } from '~/config';
 
@@ -12,11 +10,6 @@ const StyledMessageBubble = styled.div<{ isOutbound: boolean }>`
   flex-direction: column;
   position: relative;
   width: 100%;
-
-  &:hover .message-footer {
-    opacity: 1;
-    pointer-events: auto;
-  }
 `;
 
 const StyledMessageText = styled.div<{ isOutbound: boolean }>`
@@ -45,26 +38,18 @@ const StyledMessageContainer = styled.div`
   width: fit-content;
 `;
 
-const StyledMessageFooter = styled.div`
+const StyledTimestamp = styled.span<{ isOutbound: boolean }>`
   align-items: center;
-  color: ${themeCssVariables.font.color.secondary};
+  color: ${({ isOutbound }) =>
+    isOutbound
+      ? themeCssVariables.color.sky11
+      : themeCssVariables.font.color.light};
   display: flex;
-  font-size: ${themeCssVariables.font.size.sm};
-  gap: ${themeCssVariables.spacing[1]};
-  justify-content: space-between;
-  margin-top: ${themeCssVariables.spacing[1]};
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity calc(${themeCssVariables.animation.duration.normal} * 1s)
-    ease-in-out;
-  width: 100%;
-`;
-
-const StyledTimestamp = styled.span`
-  align-items: center;
-  color: ${themeCssVariables.font.color.light};
-  display: flex;
-  gap: ${themeCssVariables.spacing[1]};
+  float: right;
+  font-size: ${themeCssVariables.font.size.xs};
+  gap: 2px;
+  margin-left: ${themeCssVariables.spacing[2]};
+  margin-top: 2px;
 `;
 
 const StyledMediaPreview = styled.div`
@@ -199,15 +184,12 @@ export const DialogMessageBubble = ({ message }: DialogMessageBubbleProps) => {
             </StyledMediaPreview>
           )}
           {message.text}
+          <StyledTimestamp isOutbound={isOutbound}>
+            {formatMessageTime(message.sentAt)}
+            {isOutbound && <IconCheck size={12} />}
+          </StyledTimestamp>
         </StyledMessageText>
       </StyledMessageContainer>
-      <StyledMessageFooter className="message-footer">
-        <StyledTimestamp>
-          {formatMessageTime(message.sentAt)}
-          {isOutbound && <IconCheck size={12} />}
-        </StyledTimestamp>
-        {message.text && <LightCopyIconButton copyText={message.text} />}
-      </StyledMessageFooter>
     </StyledMessageBubble>
   );
 };

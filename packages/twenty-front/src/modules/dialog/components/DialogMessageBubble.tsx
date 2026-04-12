@@ -1,7 +1,7 @@
-import { styled } from '@linaria/react';
-import { themeCssVariables } from 'twenty-ui/theme-constants';
-import { IconCheck, IconFile } from 'twenty-ui/display';
 import { type DialogMessageRecord } from '@/dialog/hooks/useDialogMessages';
+import { styled } from '@linaria/react';
+import { IconCheck, IconFile } from 'twenty-ui/display';
+import { themeCssVariables } from 'twenty-ui/theme-constants';
 import { REACT_APP_SERVER_BASE_URL } from '~/config';
 
 const StyledMessageBubble = styled.div<{ isOutbound: boolean }>`
@@ -26,7 +26,8 @@ const StyledMessageText = styled.div<{ isOutbound: boolean }>`
   line-height: 1.4em;
   max-width: 100%;
   overflow-wrap: break-word;
-  padding: ${themeCssVariables.spacing[1]} ${themeCssVariables.spacing[2]};
+  padding: ${themeCssVariables.spacing[3]} ${themeCssVariables.spacing[3]}
+    ${themeCssVariables.spacing['0.5']};
   white-space: pre-wrap;
   width: fit-content;
   word-wrap: break-word;
@@ -38,17 +39,16 @@ const StyledMessageContainer = styled.div`
   width: fit-content;
 `;
 
-const StyledTimestamp = styled.span<{ isOutbound: boolean }>`
+const StyledTimestamp = styled.div<{ isOutbound: boolean }>`
   align-items: center;
   color: ${({ isOutbound }) =>
     isOutbound
       ? themeCssVariables.color.sky11
       : themeCssVariables.font.color.light};
   display: flex;
-  float: right;
   font-size: ${themeCssVariables.font.size.xs};
   gap: 2px;
-  margin-left: ${themeCssVariables.spacing[2]};
+  justify-content: flex-end;
   margin-top: 2px;
 `;
 

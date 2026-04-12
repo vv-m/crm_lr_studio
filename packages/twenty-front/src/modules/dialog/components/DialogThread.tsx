@@ -24,11 +24,17 @@ const StyledMessagesContainer = styled.div`
   flex: 1;
   flex-direction: column;
   gap: ${themeCssVariables.spacing[2]};
-  justify-content: flex-end;
   min-height: 0;
   overflow-y: auto;
   padding: ${themeCssVariables.spacing[3]};
   position: relative;
+`;
+
+const StyledMessagesList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${themeCssVariables.spacing[2]};
+  margin-top: auto;
 `;
 
 const StyledEmptyState = styled.div`
@@ -103,9 +109,11 @@ export const DialogThread = ({ dialogId }: DialogThreadProps) => {
         {messages.length === 0 ? (
           <StyledEmptyState>{t`No messages in this dialog yet`}</StyledEmptyState>
         ) : (
-          messages.map((message) => (
-            <DialogMessageBubble key={message.id} message={message} />
-          ))
+          <StyledMessagesList>
+            {messages.map((message) => (
+              <DialogMessageBubble key={message.id} message={message} />
+            ))}
+          </StyledMessagesList>
         )}
         <div ref={messagesEndRef} />
       </StyledMessagesContainer>

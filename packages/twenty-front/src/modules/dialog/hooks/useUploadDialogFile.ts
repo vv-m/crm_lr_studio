@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useApolloClient, useMutation } from '@apollo/client/react';
 
-import { UPLOAD_FILES_FIELD_FILE } from '@/file/graphql/mutations/uploadFilesFieldFile';
+import { UploadAiChatFileDocument } from '~/generated-metadata/graphql';
 
 type UploadedFile = {
   id: string;
@@ -13,13 +13,12 @@ type UseUploadDialogFileReturn = {
   uploadFile: (file: File) => Promise<UploadedFile | null>;
 };
 
-// A placeholder fieldMetadataId for dialog file uploads
-const DIALOG_FILE_FIELD_METADATA_ID = 'dialog-file-upload';
-
+// Reuse the AI chat file upload mutation — it accepts a bare file
+// without requiring a fieldMetadataId UUID
 export const useUploadDialogFile = (): UseUploadDialogFileReturn => {
   const apolloClient = useApolloClient();
 
-  const [uploadFileMutation] = useMutation(UPLOAD_FILES_FIELD_FILE, {
+  const [uploadFileMutation] = useMutation(UploadAiChatFileDocument, {
     client: apolloClient,
   });
 
@@ -27,13 +26,10 @@ export const useUploadDialogFile = (): UseUploadDialogFileReturn => {
     async (file: File): Promise<UploadedFile | null> => {
       try {
         const result = await uploadFileMutation({
-          variables: {
-            file,
-            fieldMetadataId: DIALOG_FILE_FIELD_METADATA_ID,
-          },
+          variables: { file },
         });
 
-        const data = result.data?.uploadFilesFieldFile;
+        const data = result.data?.uploadAIChatFile;
 
         if (!data) {
           return null;

@@ -1,165 +1,162 @@
 import { useCallback, useRef, useState } from 'react';
 import { styled } from '@linaria/react';
 import { themeCssVariables } from 'twenty-ui/theme-constants';
-import { IconPaperclip, IconSend, IconX } from 'twenty-ui/display';
+import { IconPaperclip, IconArrowUp, IconX } from 'twenty-ui/display';
+import { IconButton, RoundedIconButton } from 'twenty-ui/input';
+import { isDefined } from 'twenty-shared/utils';
 
-const StyledWrapper = styled.div`
-  border-top: 1px solid ${themeCssVariables.border.color.medium};
-  background-color: ${themeCssVariables.background.primary};
+const StyledInputArea = styled.div`
+  align-items: flex-end;
+  background: ${themeCssVariables.background.primary};
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: ${themeCssVariables.spacing[2]};
+  padding-block: ${themeCssVariables.spacing[3]};
+  padding-inline: ${themeCssVariables.spacing[3]};
 `;
 
-const StyledDropZone = styled.div<{ isDragging: boolean }>`
-  position: relative;
-  ${(props) =>
-    props.isDragging
-      ? `
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border: 2px dashed ${themeCssVariables.color.blue};
-      border-radius: ${themeCssVariables.border.radius.md};
-      background-color: ${themeCssVariables.background.transparent.blue};
-      pointer-events: none;
-      z-index: 1;
-    }
-  `
-      : ''}
+const StyledInputBox = styled.div`
+  background-color: ${themeCssVariables.background.transparent.lighter};
+  border: 1px solid ${themeCssVariables.border.color.medium};
+  border-radius: ${themeCssVariables.border.radius.sm};
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: ${themeCssVariables.spacing[2]};
+  padding: ${themeCssVariables.spacing[2]};
+  width: 100%;
+
+  &:focus-within {
+    border-color: ${themeCssVariables.color.blue};
+    box-shadow: 0px 0px 0px 3px ${themeCssVariables.color.transparent.blue2};
+  }
+`;
+
+const StyledTextarea = styled.textarea`
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: ${themeCssVariables.font.color.primary};
+  font-family: inherit;
+  font-size: ${themeCssVariables.font.size.md};
+  font-weight: ${themeCssVariables.font.weight.regular};
+  line-height: 16px;
+  max-height: 320px;
+  min-height: 48px;
+  outline: none;
+  overflow-y: auto;
+  padding: 0;
+  resize: none;
+  width: 100%;
+
+  &::placeholder {
+    color: ${themeCssVariables.font.color.light};
+    font-weight: ${themeCssVariables.font.weight.regular};
+  }
+`;
+
+const StyledButtonsContainer = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const StyledLeftButtonsContainer = styled.div`
+  align-items: center;
+  display: flex;
+  gap: ${themeCssVariables.spacing['0.5']};
+`;
+
+const StyledRightButtonsContainer = styled.div`
+  align-items: center;
+  display: flex;
+  gap: ${themeCssVariables.spacing[1]};
+`;
+
+const StyledFileInput = styled.input`
+  display: none;
 `;
 
 const StyledPreviewRow = styled.div`
   display: flex;
-  gap: 8px;
-  padding: 8px 16px 0;
+  flex-direction: row;
   flex-wrap: wrap;
+  gap: ${themeCssVariables.spacing[2]};
 `;
 
 const StyledPreviewItem = styled.div`
+  border: 1px solid ${themeCssVariables.border.color.medium};
+  border-radius: ${themeCssVariables.border.radius.sm};
+  flex-shrink: 0;
+  height: 64px;
+  overflow: hidden;
   position: relative;
   width: 64px;
-  height: 64px;
-  border-radius: ${themeCssVariables.border.radius.sm};
-  overflow: hidden;
-  border: 1px solid ${themeCssVariables.border.color.medium};
-  flex-shrink: 0;
 `;
 
 const StyledPreviewImage = styled.img`
-  width: 100%;
   height: 100%;
   object-fit: cover;
+  width: 100%;
 `;
 
 const StyledPreviewFile = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
   align-items: center;
-  justify-content: center;
   background-color: ${themeCssVariables.background.tertiary};
-  font-size: 10px;
   color: ${themeCssVariables.font.color.secondary};
-  text-align: center;
+  display: flex;
+  font-size: 10px;
+  height: 100%;
+  justify-content: center;
   padding: 4px;
+  text-align: center;
+  width: 100%;
   word-break: break-all;
 `;
 
 const StyledRemoveButton = styled.button`
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: none;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #ffffff;
-  display: flex;
   align-items: center;
-  justify-content: center;
+  background-color: ${themeCssVariables.background.transparent.dark};
+  border: none;
+  border-radius: 50%;
+  color: ${themeCssVariables.font.color.inverted};
   cursor: pointer;
+  display: flex;
+  height: 18px;
+  justify-content: center;
   padding: 0;
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  width: 18px;
   z-index: 2;
 `;
 
-const StyledInputContainer = styled.div`
+const StyledDropOverlay = styled.div`
+  align-items: center;
+  background-color: ${themeCssVariables.background.transparent.blue};
+  border: 2px dashed ${themeCssVariables.color.blue};
+  border-radius: ${themeCssVariables.border.radius.sm};
+  color: ${themeCssVariables.color.blue};
   display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  padding: 12px 16px;
-`;
-
-const StyledTextarea = styled.textarea`
-  flex: 1;
-  resize: none;
-  border: 1px solid ${themeCssVariables.border.color.medium};
-  border-radius: ${themeCssVariables.border.radius.md};
-  padding: 8px 12px;
-  font-family: ${themeCssVariables.font.family};
   font-size: ${themeCssVariables.font.size.md};
-  color: ${themeCssVariables.font.color.primary};
-  background-color: ${themeCssVariables.background.secondary};
-  outline: none;
-  min-height: 36px;
-  max-height: 120px;
-  overflow-y: auto;
-
-  &::placeholder {
-    color: ${themeCssVariables.font.color.tertiary};
-  }
-
-  &:focus {
-    border-color: ${themeCssVariables.color.blue};
-  }
-`;
-
-const StyledIconButton = styled.button<{ disabled: boolean }>`
-  display: flex;
-  align-items: center;
+  font-weight: ${themeCssVariables.font.weight.medium};
+  height: 100%;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: none;
-  border-radius: ${themeCssVariables.border.radius.md};
-  background-color: transparent;
-  color: ${(props) =>
-    props.disabled
-      ? themeCssVariables.font.color.tertiary
-      : themeCssVariables.font.color.secondary};
-  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
-  flex-shrink: 0;
-  transition: color 0.15s ease;
-
-  &:hover:not(:disabled) {
-    color: ${themeCssVariables.font.color.primary};
-  }
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 10;
 `;
 
-const StyledSendButton = styled.button<{ disabled: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: none;
-  border-radius: ${themeCssVariables.border.radius.md};
-  background-color: ${(props) =>
-    props.disabled
-      ? themeCssVariables.background.tertiary
-      : themeCssVariables.color.blue};
-  color: ${(props) =>
-    props.disabled ? themeCssVariables.font.color.tertiary : '#ffffff'};
-  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
-  flex-shrink: 0;
-  transition: background-color 0.15s ease;
-
-  &:hover:not(:disabled) {
-    opacity: 0.9;
-  }
+const StyledDropZoneWrapper = styled.div`
+  position: relative;
 `;
 
-const isImageFile = (file: File): boolean =>
-  file.type.startsWith('image/');
+const isImageFile = (file: File): boolean => file.type.startsWith('image/');
 
 type DialogMessageInputProps = {
   onSend: (text: string, files?: File[]) => void;
@@ -175,21 +172,10 @@ export const DialogMessageInput = ({
   const [isDragging, setIsDragging] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const dragCounterRef = useRef(0);
-
-  const handleAutoGrow = useCallback(() => {
-    const textarea = textareaRef.current;
-
-    if (textarea) {
-      textarea.style.height = 'auto';
-      textarea.style.height = `${textarea.scrollHeight}px`;
-    }
-  }, []);
+  const [dragCounter, setDragCounter] = useState(0);
 
   const addFiles = useCallback((files: FileList | File[]) => {
-    const fileArray = Array.from(files);
-
-    setAttachedFiles((prev) => [...prev, ...fileArray]);
+    setAttachedFiles((prev) => [...prev, ...Array.from(files)]);
   }, []);
 
   const removeFile = useCallback((index: number) => {
@@ -207,12 +193,6 @@ export const DialogMessageInput = ({
     onSend(trimmed, hasFiles ? attachedFiles : undefined);
     setText('');
     setAttachedFiles([]);
-
-    const textarea = textareaRef.current;
-
-    if (textarea) {
-      textarea.style.height = 'auto';
-    }
   }, [text, attachedFiles, disabled, onSend]);
 
   const handleKeyDown = useCallback(
@@ -225,12 +205,11 @@ export const DialogMessageInput = ({
     [handleSend],
   );
 
-  // Paste from clipboard
   const handlePaste = useCallback(
     (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
       const items = event.clipboardData?.items;
 
-      if (!items) {
+      if (!isDefined(items)) {
         return;
       }
 
@@ -242,7 +221,7 @@ export const DialogMessageInput = ({
         if (item.kind === 'file') {
           const file = item.getAsFile();
 
-          if (file) {
+          if (isDefined(file)) {
             pastedFiles.push(file);
           }
         }
@@ -256,31 +235,34 @@ export const DialogMessageInput = ({
     [addFiles],
   );
 
-  // Drag and drop handlers
   const handleDragEnter = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault();
       event.stopPropagation();
-      dragCounterRef.current += 1;
+      const newCount = dragCounter + 1;
+
+      setDragCounter(newCount);
 
       if (event.dataTransfer.types.includes('Files')) {
         setIsDragging(true);
       }
     },
-    [],
+    [dragCounter],
   );
 
   const handleDragLeave = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault();
       event.stopPropagation();
-      dragCounterRef.current -= 1;
+      const newCount = dragCounter - 1;
 
-      if (dragCounterRef.current === 0) {
+      setDragCounter(newCount);
+
+      if (newCount === 0) {
         setIsDragging(false);
       }
     },
-    [],
+    [dragCounter],
   );
 
   const handleDragOver = useCallback((event: React.DragEvent) => {
@@ -292,7 +274,7 @@ export const DialogMessageInput = ({
     (event: React.DragEvent) => {
       event.preventDefault();
       event.stopPropagation();
-      dragCounterRef.current = 0;
+      setDragCounter(0);
       setIsDragging(false);
 
       const droppedFiles = event.dataTransfer.files;
@@ -304,84 +286,84 @@ export const DialogMessageInput = ({
     [addFiles],
   );
 
-  const handleAttachClick = useCallback(() => {
-    fileInputRef.current?.click();
-  }, []);
-
-  const handleFileInputChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const selectedFiles = event.target.files;
-
-      if (selectedFiles && selectedFiles.length > 0) {
-        addFiles(selectedFiles);
-      }
-
-      // Reset input so the same file can be selected again
-      event.target.value = '';
-    },
-    [addFiles],
-  );
-
   const isDisabled =
     disabled || (text.trim().length === 0 && attachedFiles.length === 0);
 
   return (
-    <StyledDropZone
-      isDragging={isDragging}
+    <StyledDropZoneWrapper
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <StyledWrapper>
-        {attachedFiles.length > 0 && (
-          <StyledPreviewRow>
-            {attachedFiles.map((file, index) => (
-              <StyledPreviewItem key={`${file.name}-${index}`}>
-                {isImageFile(file) ? (
-                  <StyledPreviewImage
-                    src={URL.createObjectURL(file)}
-                    alt={file.name}
-                  />
-                ) : (
-                  <StyledPreviewFile>{file.name}</StyledPreviewFile>
-                )}
-                <StyledRemoveButton onClick={() => removeFile(index)}>
-                  <IconX size={10} />
-                </StyledRemoveButton>
-              </StyledPreviewItem>
-            ))}
-          </StyledPreviewRow>
-        )}
-        <StyledInputContainer>
-          <StyledIconButton disabled={disabled} onClick={handleAttachClick}>
-            <IconPaperclip size={18} />
-          </StyledIconButton>
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.zip,.rar"
-            style={{ display: 'none' }}
-            onChange={handleFileInputChange}
-          />
+      {isDragging && <StyledDropOverlay>Drop files here</StyledDropOverlay>}
+      <StyledInputArea>
+        <StyledInputBox>
+          {attachedFiles.length > 0 && (
+            <StyledPreviewRow>
+              {attachedFiles.map((file, index) => (
+                <StyledPreviewItem key={`${file.name}-${index}`}>
+                  {isImageFile(file) ? (
+                    <StyledPreviewImage
+                      src={URL.createObjectURL(file)}
+                      alt={file.name}
+                    />
+                  ) : (
+                    <StyledPreviewFile>{file.name}</StyledPreviewFile>
+                  )}
+                  <StyledRemoveButton onClick={() => removeFile(index)}>
+                    <IconX size={10} />
+                  </StyledRemoveButton>
+                </StyledPreviewItem>
+              ))}
+            </StyledPreviewRow>
+          )}
           <StyledTextarea
             ref={textareaRef}
             value={text}
-            onChange={(event) => {
-              setText(event.target.value);
-              handleAutoGrow();
-            }}
+            onChange={(event) => setText(event.target.value)}
             onKeyDown={handleKeyDown}
             onPaste={handlePaste}
             placeholder="Type a message..."
             rows={1}
           />
-          <StyledSendButton disabled={isDisabled} onClick={handleSend}>
-            <IconSend size={18} />
-          </StyledSendButton>
-        </StyledInputContainer>
-      </StyledWrapper>
-    </StyledDropZone>
+          <StyledButtonsContainer>
+            <StyledLeftButtonsContainer>
+              <StyledFileInput
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.zip,.rar"
+                onChange={(event) => {
+                  if (
+                    isDefined(event.target.files) &&
+                    event.target.files.length > 0
+                  ) {
+                    addFiles(event.target.files);
+                  }
+
+                  event.target.value = '';
+                }}
+              />
+              <IconButton
+                variant="tertiary"
+                size="small"
+                onClick={() => fileInputRef.current?.click()}
+                Icon={IconPaperclip}
+                ariaLabel="Attach files"
+              />
+            </StyledLeftButtonsContainer>
+            <StyledRightButtonsContainer>
+              <RoundedIconButton
+                Icon={IconArrowUp}
+                size="medium"
+                onClick={handleSend}
+                disabled={isDisabled}
+              />
+            </StyledRightButtonsContainer>
+          </StyledButtonsContainer>
+        </StyledInputBox>
+      </StyledInputArea>
+    </StyledDropZoneWrapper>
   );
 };

@@ -21,30 +21,28 @@ const StyledMessageBubble = styled.div<{ isOutbound: boolean }>`
 
 const StyledMessageText = styled.div<{ isOutbound: boolean }>`
   background: ${({ isOutbound }) =>
-    isOutbound ? themeCssVariables.background.tertiary : 'transparent'};
-  border-radius: ${({ isOutbound }) =>
-    isOutbound ? themeCssVariables.border.radius.sm : '0'};
+    isOutbound
+      ? themeCssVariables.color.sky4
+      : themeCssVariables.background.tertiary};
+  border-radius: ${themeCssVariables.border.radius.sm};
   color: ${({ isOutbound }) =>
     isOutbound
-      ? themeCssVariables.font.color.secondary
+      ? themeCssVariables.color.sky12
       : themeCssVariables.font.color.primary};
   font-weight: ${({ isOutbound }) => (isOutbound ? 500 : 400)};
   line-height: 1.4em;
   max-width: 100%;
   overflow-wrap: break-word;
-  padding: ${({ isOutbound }) =>
-    isOutbound
-      ? `${themeCssVariables.spacing[1]} ${themeCssVariables.spacing[2]}`
-      : '0'};
+  padding: ${themeCssVariables.spacing[1]} ${themeCssVariables.spacing[2]};
   white-space: pre-wrap;
-  width: ${({ isOutbound }) => (isOutbound ? 'fit-content' : '100%')};
+  width: fit-content;
   word-wrap: break-word;
 `;
 
-const StyledMessageContainer = styled.div<{ isOutbound: boolean }>`
+const StyledMessageContainer = styled.div`
   max-width: 100%;
   min-width: 0;
-  width: ${({ isOutbound }) => (isOutbound ? 'fit-content' : '100%')};
+  width: fit-content;
 `;
 
 const StyledMessageFooter = styled.div`
@@ -169,7 +167,7 @@ export const DialogMessageBubble = ({ message }: DialogMessageBubbleProps) => {
 
   return (
     <StyledMessageBubble isOutbound={isOutbound}>
-      <StyledMessageContainer isOutbound={isOutbound}>
+      <StyledMessageContainer>
         <StyledMessageText isOutbound={isOutbound}>
           {message.contentUri && (
             <StyledMediaPreview>

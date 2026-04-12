@@ -2,6 +2,8 @@ import { useCallback, useState } from 'react';
 import { gql } from '@apollo/client';
 import { useMutation } from '@apollo/client/react';
 
+import { useApolloCoreClient } from '@/object-metadata/hooks/useApolloCoreClient';
+
 const SEND_DIALOG_MESSAGE_MUTATION = gql`
   mutation SendDialogMessage(
     $dialogId: UUID!
@@ -47,10 +49,11 @@ type UseSendDialogMessageReturn = {
 
 export const useSendDialogMessage = (): UseSendDialogMessageReturn => {
   const [loading, setLoading] = useState(false);
+  const apolloCoreClient = useApolloCoreClient();
 
   const [sendDialogMessageMutation] = useMutation<{
     sendDialogMessage: SendDialogMessageResult;
-  }>(SEND_DIALOG_MESSAGE_MUTATION);
+  }>(SEND_DIALOG_MESSAGE_MUTATION, { client: apolloCoreClient });
 
   const sendMessage = useCallback(
     async (params: {

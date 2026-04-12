@@ -6146,6 +6146,7 @@ export enum WidgetConfigurationType {
 
 export enum WidgetType {
   CALENDAR = 'CALENDAR',
+  DIALOGS = 'DIALOGS',
   EMAILS = 'EMAILS',
   EMAIL_THREAD = 'EMAIL_THREAD',
   FIELD = 'FIELD',

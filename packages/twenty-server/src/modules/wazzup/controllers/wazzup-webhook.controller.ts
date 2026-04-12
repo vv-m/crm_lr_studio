@@ -6,6 +6,8 @@ import { type WazzupChannelWorkspaceEntity } from 'src/modules/wazzup/standard-o
 import { type WazzupAccountWorkspaceEntity } from 'src/modules/wazzup/standard-objects/wazzup-account.workspace-entity';
 import { type DialogWorkspaceEntity } from 'src/modules/dialog/standard-objects/dialog.workspace-entity';
 import { type DialogMessageWorkspaceEntity } from 'src/modules/dialog/standard-objects/dialog-message.workspace-entity';
+import { type DialogTargetWorkspaceEntity } from 'src/modules/dialog/standard-objects/dialog-target.workspace-entity';
+import { type PersonWorkspaceEntity } from 'src/modules/person/standard-objects/person.workspace-entity';
 import { WazzupChannelSyncService } from 'src/modules/wazzup/services/wazzup-channel-sync.service';
 
 type WazzupWebhookContact = {
@@ -111,6 +113,20 @@ export class WazzupWebhookController {
             { shouldBypassPermissionChecks: true },
           );
 
+        const dialogTargetRepository =
+          await this.globalWorkspaceOrmManager.getRepository<DialogTargetWorkspaceEntity>(
+            workspaceId,
+            'dialogTarget',
+            { shouldBypassPermissionChecks: true },
+          );
+
+        const personRepository =
+          await this.globalWorkspaceOrmManager.getRepository<PersonWorkspaceEntity>(
+            workspaceId,
+            'person',
+            { shouldBypassPermissionChecks: true },
+          );
+
         for (const message of payload.messages!) {
           try {
             await this.processMessage(
@@ -118,6 +134,8 @@ export class WazzupWebhookController {
               channelRepository,
               dialogRepository,
               dialogMessageRepository,
+              dialogTargetRepository,
+              personRepository,
             );
           } catch (error) {
             this.logger.error(
@@ -141,6 +159,12 @@ export class WazzupWebhookController {
       ReturnType<typeof this.globalWorkspaceOrmManager.getRepository>
     >,
     dialogMessageRepository: Awaited<
+      ReturnType<typeof this.globalWorkspaceOrmManager.getRepository>
+    >,
+    dialogTargetRepository: Awaited<
+      ReturnType<typeof this.globalWorkspaceOrmManager.getRepository>
+    >,
+    personRepository: Awaited<
       ReturnType<typeof this.globalWorkspaceOrmManager.getRepository>
     >,
   ): Promise<void> {
@@ -177,23 +201,37 @@ export class WazzupWebhookController {
         lastMessageAt: new Date(message.dateTime),
         lastMessagePreview: message.text?.substring(0, 255) ?? null,
       });
+
+      // Auto-link new dialog to Person by phone number
+      await this.autoLinkDialogByPhone(
+        dialog as DialogWorkspaceEntity,
+        message.contact.phone,
+        personRepository,
+        dialogTargetRepository,
+      );
     }
 
     const direction = message.isEcho ? 'OUTBOUND' : 'INBOUND';
     const messagePreview = message.text?.substring(0, 255) ?? null;
 
-    // Create dialog message
-    await dialogMessageRepository.save({
-      externalMessageId: message.messageId,
-      direction,
-      messageType: message.type,
-      text: message.text ?? null,
-      contentUri: message.contentUri ?? null,
-      status: message.status ?? 'delivered',
-      sentAt: new Date(message.dateTime),
-      name: messagePreview ?? direction,
-      dialogId: (dialog as DialogWorkspaceEntity).id,
+    // Skip duplicate messages (e.g. echo of a message sent via API)
+    const existingMessage = await dialogMessageRepository.findOne({
+      where: { externalMessageId: message.messageId },
     });
+
+    if (!existingMessage) {
+      await dialogMessageRepository.save({
+        externalMessageId: message.messageId,
+        direction,
+        messageType: message.type,
+        text: message.text ?? null,
+        contentUri: message.contentUri ?? null,
+        status: message.status ?? 'delivered',
+        sentAt: new Date(message.dateTime),
+        name: messagePreview ?? direction,
+        dialogId: (dialog as DialogWorkspaceEntity).id,
+      });
+    }
 
     // Update dialog with latest message info
     await dialogRepository.update((dialog as DialogWorkspaceEntity).id, {
@@ -206,5 +244,55 @@ export class WazzupWebhookController {
         message.contact.phone ||
         (dialog as DialogWorkspaceEntity).contactPhone,
     });
+  }
+
+  private normalizePhone(phone: string): string {
+    return phone.replace(/[^0-9]/g, '').slice(-10);
+  }
+
+  private async autoLinkDialogByPhone(
+    dialog: DialogWorkspaceEntity,
+    contactPhone: string | undefined,
+    personRepository: Awaited<
+      ReturnType<typeof this.globalWorkspaceOrmManager.getRepository>
+    >,
+    dialogTargetRepository: Awaited<
+      ReturnType<typeof this.globalWorkspaceOrmManager.getRepository>
+    >,
+  ): Promise<void> {
+    if (!contactPhone) {
+      return;
+    }
+
+    const normalizedPhone = this.normalizePhone(contactPhone);
+
+    if (normalizedPhone.length < 10) {
+      return;
+    }
+
+    try {
+      const person = await (personRepository as any)
+        .createQueryBuilder('person')
+        .where(
+          `REGEXP_REPLACE("phonesPrimaryPhoneNumber", '[^0-9]', '', 'g') LIKE :phoneSuffix`,
+          { phoneSuffix: `%${normalizedPhone}` },
+        )
+        .getOne();
+
+      if (person) {
+        await dialogTargetRepository.save({
+          dialogId: dialog.id,
+          targetPersonId: (person as PersonWorkspaceEntity).id,
+        });
+
+        this.logger.log(
+          `Auto-linked dialog ${dialog.id} to person ${(person as PersonWorkspaceEntity).id} by phone ${normalizedPhone}`,
+        );
+      }
+    } catch (error) {
+      this.logger.warn(
+        `Failed to auto-link dialog ${dialog.id} by phone: ${error}`,
+      );
+    }
   }
 }

@@ -1,7 +1,3 @@
-import {
-  DIALOG_RECORD_TAB_ID,
-  DIALOG_RECORD_TAB_WIDGET_ID,
-} from '@/dialog/constants/dialog-widget-id.constant';
 import { DialogWidget } from '@/dialog/components/DialogWidget';
 import {
   LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_ID,
@@ -39,19 +35,11 @@ const isLrOpportunityProductsRecordTabWidget = (
   widget.id === LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_WIDGET_ID ||
   widget.pageLayoutTabId === LR_OPPORTUNITY_PRODUCTS_RECORD_TAB_ID;
 
-const isDialogRecordTabWidget = (widget: PageLayoutWidget): boolean =>
-  widget.id === DIALOG_RECORD_TAB_WIDGET_ID ||
-  widget.pageLayoutTabId === DIALOG_RECORD_TAB_ID;
-
 export const WidgetContentRenderer = ({
   widget,
 }: WidgetContentRendererProps) => {
   if (isLrOpportunityProductsRecordTabWidget(widget)) {
     return <OpportunityProductsRecordTab />;
-  }
-
-  if (isDialogRecordTabWidget(widget)) {
-    return <DialogWidget widget={widget} />;
   }
 
   switch (widget.type) {
@@ -84,6 +72,9 @@ export const WidgetContentRenderer = ({
 
     case WidgetType.EMAILS:
       return <EmailWidget widget={widget} />;
+
+    case WidgetType.DIALOGS:
+      return <DialogWidget widget={widget} />;
 
     case WidgetType.CALENDAR:
       return <CalendarWidget widget={widget} />;

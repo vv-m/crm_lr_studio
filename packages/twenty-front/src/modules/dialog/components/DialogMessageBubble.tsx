@@ -17,9 +17,10 @@ const StyledBubble = styled.div<{ isOutbound: boolean }>`
   border-radius: ${themeCssVariables.border.radius.md};
   background-color: ${(props) =>
     props.isOutbound
-      ? themeCssVariables.color.blue10
+      ? themeCssVariables.color.blue
       : themeCssVariables.background.secondary};
-  color: ${themeCssVariables.font.color.primary};
+  color: ${(props) =>
+    props.isOutbound ? '#ffffff' : themeCssVariables.font.color.primary};
   font-size: ${themeCssVariables.font.size.md};
   line-height: 1.5;
   word-wrap: break-word;
@@ -62,7 +63,10 @@ const StyledMeta = styled.div<{ isOutbound: boolean }>`
   gap: 4px;
   margin-top: 4px;
   font-size: ${themeCssVariables.font.size.xs};
-  color: ${themeCssVariables.font.color.tertiary};
+  color: ${(props) =>
+    props.isOutbound
+      ? 'rgba(255, 255, 255, 0.7)'
+      : themeCssVariables.font.color.tertiary};
 `;
 
 const isImageUri = (uri: string): boolean => {
@@ -104,7 +108,7 @@ type DialogMessageBubbleProps = {
 };
 
 export const DialogMessageBubble = ({ message }: DialogMessageBubbleProps) => {
-  const isOutbound = message.direction === 'outbound';
+  const isOutbound = message.direction?.toUpperCase() === 'OUTBOUND';
 
   return (
     <StyledBubbleRow isOutbound={isOutbound}>

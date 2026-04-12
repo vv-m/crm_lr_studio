@@ -138,13 +138,13 @@ export class WazzupMessageResolver {
 
         const savedMessage = await dialogMessageRepository.save({
           externalMessageId: sendResult.messageId,
-          direction: 'outbound',
+          direction: 'OUTBOUND',
           messageType: contentUri ? 'file' : 'text',
           text: text ?? null,
           contentUri: contentUri ?? null,
           status: 'sent',
           sentAt: now,
-          name: messagePreview ?? 'outbound',
+          name: messagePreview ?? 'OUTBOUND',
           dialogId: dialog.id,
         });
 
@@ -157,7 +157,7 @@ export class WazzupMessageResolver {
         return {
           id: (savedMessage as DialogMessageWorkspaceEntity).id,
           externalMessageId: sendResult.messageId,
-          direction: 'outbound',
+          direction: 'OUTBOUND',
           messageType: contentUri ? 'file' : 'text',
           text: text ?? null,
           contentUri: contentUri ?? null,

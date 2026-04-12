@@ -271,7 +271,7 @@ export const DEFAULT_OPPORTUNITY_RECORD_PAGE_LAYOUT: PageLayout = {
           id: DIALOG_RECORD_TAB_WIDGET_ID,
           pageLayoutTabId: DIALOG_RECORD_TAB_ID,
           title: 'Dialogs',
-          type: WidgetType.FIELDS,
+          type: WidgetType.DIALOGS,
           objectMetadataId: null,
           gridPosition: {
             __typename: 'GridPosition',

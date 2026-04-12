@@ -13,8 +13,9 @@ import { useUploadDialogFile } from '@/dialog/hooks/useUploadDialogFile';
 const StyledContainer = styled.div`
   background: ${themeCssVariables.background.primary};
   display: flex;
+  flex: 1;
   flex-direction: column;
-  height: 100%;
+  min-height: 0;
 `;
 
 // Matches AIChatTabMessageList StyledScrollWrapperContainer
@@ -23,6 +24,8 @@ const StyledMessagesContainer = styled.div`
   flex: 1;
   flex-direction: column;
   gap: ${themeCssVariables.spacing[2]};
+  justify-content: flex-end;
+  min-height: 0;
   overflow-y: auto;
   padding: ${themeCssVariables.spacing[3]};
   position: relative;

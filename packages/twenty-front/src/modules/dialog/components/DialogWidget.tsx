@@ -20,46 +20,47 @@ const StyledContainer = styled.div`
 
 const StyledSplitLayout = styled.div`
   display: flex;
-  height: 480px;
-  min-height: 0;
+  height: calc(100vh - 200px);
+  min-height: 320px;
 `;
 
 const StyledListPanel = styled.div`
-  width: 33%;
-  min-width: 200px;
   flex-shrink: 0;
+  min-width: 200px;
   overflow: hidden;
+  width: 33%;
 `;
 
 const StyledThreadPanel = styled.div`
-  flex: 1;
-  min-width: 0;
   display: flex;
+  flex: 1;
   flex-direction: column;
+  min-height: 0;
+  min-width: 0;
 `;
 
 const StyledNoSelectionPlaceholder = styled.div`
-  display: flex;
   align-items: center;
-  justify-content: center;
-  flex: 1;
   color: ${themeCssVariables.font.color.tertiary};
+  display: flex;
+  flex: 1;
   font-size: ${themeCssVariables.font.size.md};
+  justify-content: center;
 `;
 
 const StyledLoadingContainer = styled.div`
-  display: flex;
   align-items: center;
+  color: ${themeCssVariables.font.color.tertiary};
+  display: flex;
   justify-content: center;
   padding: 48px 0;
-  color: ${themeCssVariables.font.color.tertiary};
 `;
 
 const StyledDirectThreadContainer = styled.div`
-  height: 480px;
-  min-height: 0;
   display: flex;
   flex-direction: column;
+  height: calc(100vh - 200px);
+  min-height: 320px;
 `;
 
 type DialogWidgetProps = {

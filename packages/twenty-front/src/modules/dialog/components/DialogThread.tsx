@@ -69,17 +69,32 @@ export const DialogThread = ({ dialogId }: DialogThreadProps) => {
           const uploaded = await uploadFile(file);
 
           if (uploaded) {
-            const mimeType = file.type.split('/')[0];
+            const mimeCategory = file.type.split('/')[0];
             const wazzupType =
-              mimeType === 'image'
+              mimeCategory === 'image'
                 ? 'image'
-                : mimeType === 'video'
+                : mimeCategory === 'video'
                   ? 'video'
-                  : 'file';
+                  : mimeCategory === 'audio'
+                    ? 'audio'
+                    : 'file';
+
+            // Wazzup determines file type by URL extension.
+            // Append .ogg for audio (converted by server) or
+            // the original extension before the query string.
+            const fileExt =
+              mimeCategory === 'audio' ? 'mp3' : file.name.split('.').pop();
+            let contentUri = uploaded.url;
+
+            if (fileExt && contentUri.includes('?')) {
+              const [basePath, query] = contentUri.split('?');
+
+              contentUri = `${basePath}.${fileExt}?${query}`;
+            }
 
             await sendMessage({
               dialogId,
-              contentUri: uploaded.url,
+              contentUri,
               messageType: wazzupType,
             });
           }

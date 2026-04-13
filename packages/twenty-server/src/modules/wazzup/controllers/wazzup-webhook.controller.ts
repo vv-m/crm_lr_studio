@@ -128,6 +128,9 @@ export class WazzupWebhookController {
           );
 
         for (const message of payload.messages!) {
+          this.logger.log(
+            `Webhook message: type=${message.type} echo=${message.isEcho} text=${message.text?.substring(0, 30)} contentUri=${message.contentUri?.substring(0, 60)}`,
+          );
           try {
             await this.processMessage(
               message,

@@ -90,8 +90,12 @@ export class FileController {
     @Res() res: Response,
     @Req() req: Request,
     @Param('fileFolder') fileFolder: SupportedFileFolder,
-    @Param('id') fileId: string,
+    @Param('id') rawFileId: string,
   ) {
+    // Strip file extension from ID if present (e.g. "uuid.ogg" → "uuid")
+    // so URLs with extensions work for Wazzup voice message detection.
+    const extMatch = rawFileId.match(/\.([^.]+)$/);
+    const fileId = extMatch ? rawFileId.replace(/\.[^.]+$/, '') : rawFileId;
     // oxlint-disable-next-line @typescripttypescript/no-explicit-any
     const workspaceId = (req as any)?.workspaceId;
 
@@ -107,6 +111,18 @@ export class FileController {
       }
 
       setFileResponseHeaders(res, fileResponse.mimeType);
+
+      // When URL includes a file extension (e.g. uuid.ogg), set
+      // Content-Disposition with filename so Wazzup and other
+      // services can detect the file format correctly.
+      if (extMatch) {
+        const ext = extMatch[1];
+
+        res.setHeader(
+          'Content-Disposition',
+          `inline; filename="file.${ext}"`,
+        );
+      }
 
       fileResponse.stream.on('error', () => {
         if (!res.headersSent) {

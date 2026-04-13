@@ -1,9 +1,16 @@
 import { useCallback, useRef, useState } from 'react';
 import { styled } from '@linaria/react';
 import { themeCssVariables } from 'twenty-ui/theme-constants';
-import { IconPaperclip, IconArrowUp, IconX } from 'twenty-ui/display';
+import {
+  IconArrowUp,
+  IconMicrophone,
+  IconPaperclip,
+  IconX,
+} from 'twenty-ui/display';
 import { IconButton, RoundedIconButton } from 'twenty-ui/input';
 import { isDefined } from 'twenty-shared/utils';
+
+import { DialogAudioRecorder } from '@/dialog/components/DialogAudioRecorder';
 
 const StyledInputArea = styled.div`
   align-items: flex-end;
@@ -170,6 +177,7 @@ export const DialogMessageInput = ({
   const [text, setText] = useState('');
   const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [dragCounter, setDragCounter] = useState(0);
@@ -286,6 +294,18 @@ export const DialogMessageInput = ({
     [addFiles],
   );
 
+  const handleAudioRecordingComplete = useCallback(
+    (audioFile: File) => {
+      setIsRecording(false);
+      onSend('', [audioFile]);
+    },
+    [onSend],
+  );
+
+  const handleAudioRecordingCancel = useCallback(() => {
+    setIsRecording(false);
+  }, []);
+
   const isDisabled =
     disabled || (text.trim().length === 0 && attachedFiles.length === 0);
 
@@ -299,69 +319,86 @@ export const DialogMessageInput = ({
       {isDragging && <StyledDropOverlay>Drop files here</StyledDropOverlay>}
       <StyledInputArea>
         <StyledInputBox>
-          {attachedFiles.length > 0 && (
-            <StyledPreviewRow>
-              {attachedFiles.map((file, index) => (
-                <StyledPreviewItem key={`${file.name}-${index}`}>
-                  {isImageFile(file) ? (
-                    <StyledPreviewImage
-                      src={URL.createObjectURL(file)}
-                      alt={file.name}
-                    />
-                  ) : (
-                    <StyledPreviewFile>{file.name}</StyledPreviewFile>
-                  )}
-                  <StyledRemoveButton onClick={() => removeFile(index)}>
-                    <IconX size={10} />
-                  </StyledRemoveButton>
-                </StyledPreviewItem>
-              ))}
-            </StyledPreviewRow>
-          )}
-          <StyledTextarea
-            ref={textareaRef}
-            value={text}
-            onChange={(event) => setText(event.target.value)}
-            onKeyDown={handleKeyDown}
-            onPaste={handlePaste}
-            placeholder="Type a message..."
-            rows={1}
-          />
-          <StyledButtonsContainer>
-            <StyledLeftButtonsContainer>
-              <StyledFileInput
-                ref={fileInputRef}
-                type="file"
-                multiple
-                accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.zip,.rar"
-                onChange={(event) => {
-                  if (
-                    isDefined(event.target.files) &&
-                    event.target.files.length > 0
-                  ) {
-                    addFiles(event.target.files);
-                  }
+          {isRecording ? (
+            <DialogAudioRecorder
+              onComplete={handleAudioRecordingComplete}
+              onCancel={handleAudioRecordingCancel}
+            />
+          ) : (
+            <>
+              {attachedFiles.length > 0 && (
+                <StyledPreviewRow>
+                  {attachedFiles.map((file, index) => (
+                    <StyledPreviewItem key={`${file.name}-${index}`}>
+                      {isImageFile(file) ? (
+                        <StyledPreviewImage
+                          src={URL.createObjectURL(file)}
+                          alt={file.name}
+                        />
+                      ) : (
+                        <StyledPreviewFile>{file.name}</StyledPreviewFile>
+                      )}
+                      <StyledRemoveButton onClick={() => removeFile(index)}>
+                        <IconX size={10} />
+                      </StyledRemoveButton>
+                    </StyledPreviewItem>
+                  ))}
+                </StyledPreviewRow>
+              )}
+              <StyledTextarea
+                ref={textareaRef}
+                value={text}
+                onChange={(event) => setText(event.target.value)}
+                onKeyDown={handleKeyDown}
+                onPaste={handlePaste}
+                placeholder="Type a message..."
+                rows={1}
+              />
+              <StyledButtonsContainer>
+                <StyledLeftButtonsContainer>
+                  <StyledFileInput
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.zip,.rar"
+                    onChange={(event) => {
+                      if (
+                        isDefined(event.target.files) &&
+                        event.target.files.length > 0
+                      ) {
+                        addFiles(event.target.files);
+                      }
 
-                  event.target.value = '';
-                }}
-              />
-              <IconButton
-                variant="tertiary"
-                size="small"
-                onClick={() => fileInputRef.current?.click()}
-                Icon={IconPaperclip}
-                ariaLabel="Attach files"
-              />
-            </StyledLeftButtonsContainer>
-            <StyledRightButtonsContainer>
-              <RoundedIconButton
-                Icon={IconArrowUp}
-                size="medium"
-                onClick={handleSend}
-                disabled={isDisabled}
-              />
-            </StyledRightButtonsContainer>
-          </StyledButtonsContainer>
+                      event.target.value = '';
+                    }}
+                  />
+                  <IconButton
+                    variant="tertiary"
+                    size="small"
+                    onClick={() => fileInputRef.current?.click()}
+                    Icon={IconPaperclip}
+                    ariaLabel="Attach files"
+                  />
+                </StyledLeftButtonsContainer>
+                <StyledRightButtonsContainer>
+                  <IconButton
+                    variant="tertiary"
+                    size="small"
+                    onClick={() => setIsRecording(true)}
+                    Icon={IconMicrophone}
+                    ariaLabel="Record audio"
+                    disabled={disabled}
+                  />
+                  <RoundedIconButton
+                    Icon={IconArrowUp}
+                    size="medium"
+                    onClick={handleSend}
+                    disabled={isDisabled}
+                  />
+                </StyledRightButtonsContainer>
+              </StyledButtonsContainer>
+            </>
+          )}
         </StyledInputBox>
       </StyledInputArea>
     </StyledDropZoneWrapper>

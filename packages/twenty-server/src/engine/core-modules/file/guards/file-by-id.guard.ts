@@ -24,7 +24,8 @@ export class FileByIdGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const fileId = request.params.id;
+    // Strip file extension if present (e.g. "uuid.ogg" → "uuid")
+    const fileId = (request.params.id as string).replace(/\.[^.]+$/, '');
     const fileFolder = request.params.fileFolder as FileFolder;
     const fileToken = request.query.token;
 

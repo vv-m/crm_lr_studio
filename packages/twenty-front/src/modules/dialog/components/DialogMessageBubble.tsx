@@ -1,3 +1,4 @@
+import { DialogAudioPlayer } from '@/dialog/components/DialogAudioPlayer';
 import { type DialogMessageRecord } from '@/dialog/hooks/useDialogMessages';
 import { styled } from '@linaria/react';
 import { IconCheck, IconFile } from 'twenty-ui/display';
@@ -134,6 +135,22 @@ const isVideoContent = (uri: string, messageType?: string): boolean => {
   );
 };
 
+const isAudioContent = (uri: string, messageType?: string): boolean => {
+  if (messageType === 'audio' || messageType === 'voice') {
+    return true;
+  }
+
+  const lower = uri.toLowerCase();
+
+  return (
+    lower.endsWith('.mp3') ||
+    lower.endsWith('.ogg') ||
+    lower.endsWith('.wav') ||
+    lower.endsWith('.m4a') ||
+    lower.endsWith('.opus')
+  );
+};
+
 const formatMessageTime = (sentAt: string): string => {
   const date = new Date(sentAt);
 
@@ -171,6 +188,13 @@ export const DialogMessageBubble = ({ message }: DialogMessageBubbleProps) => {
                 <StyledVideo controls>
                   <source src={toDisplayUri(message.contentUri)} />
                 </StyledVideo>
+              ) : isAudioContent(
+                  message.contentUri,
+                  message.messageType,
+                ) ? (
+                <DialogAudioPlayer
+                  src={toDisplayUri(message.contentUri)}
+                />
               ) : (
                 <StyledFileLink
                   href={toDisplayUri(message.contentUri)}

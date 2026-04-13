@@ -21,6 +21,22 @@ export const extractFileInfo = async ({
 }) => {
   const { ext: declaredExt } = buildFileInfo(filename);
 
+  // Audio files recorded in-browser (webm, ogg) may be detected as
+  // video/webm by file-type because Chrome uses WebM container for
+  // audio. Trust the declared extension for known audio formats so
+  // the file keeps its .ogg name (required by Wazzup for voice).
+  const audioExtensions = new Set(['webm', 'ogg', 'opus', 'm4a', 'wav', 'mp3']);
+
+  if (isNonEmptyString(declaredExt) && audioExtensions.has(declaredExt)) {
+    const mimeTypeFromExtension =
+      lookup(declaredExt) ?? 'application/octet-stream';
+
+    return {
+      mimeType: mimeTypeFromExtension,
+      ext: declaredExt,
+    };
+  }
+
   const fileParser = new FileTypeParser({
     customDetectors: [detectPdf],
   });
